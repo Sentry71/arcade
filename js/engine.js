@@ -80,7 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -95,6 +95,28 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    }
+
+    /* Check collisions
+    */
+    function checkCollisions(){
+      // Check for water collision.
+      if(player.y < 0) {
+        player.reset();
+      }
+
+      /* Check for enemy collision
+       * Allow for 10 pixel difference in alignment of enemy and player
+       * Y positions on the same row, due to centering of sprites.
+       * Collision occurs when opposite side X coords are within 75 pixels.
+       */
+      allEnemies.forEach(function(enemy) {
+        if(player.y - enemy.y == 10) {
+          if(player.x < enemy.x + 75 && player.x + 75 > enemy.x ){
+            player.reset();
+          }
+        }
+      });
     }
 
     /* This function initially draws the "game level", it will then call
