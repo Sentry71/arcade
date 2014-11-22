@@ -194,7 +194,9 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/Mike.png',
+        'images/Miriam.png',
+        'images/Book.png'
     ]);
     Resources.onReady(init);
 

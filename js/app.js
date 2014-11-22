@@ -35,9 +35,10 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(x,y) {
-  this.sprite = 'images/char-boy.png';
+  this.sprite = 'images/Mike.png';
   this.x = x;
   this.y = y;
+  this.carryItem = false;
 }
 
 // Update player's position
@@ -91,7 +92,6 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 allEnemies = [];
@@ -99,6 +99,9 @@ for(i=1; i<4; i++){
   var enemy = new Enemy(0-i*101,83*i-21);
   allEnemies.push(enemy);
 }
+
+// Place item to be picked up by player
+
 
 // Place the player object in a variable called player
 var player = new Player(202,404);
