@@ -8,7 +8,7 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.rate = 100 + Math.floor(Math.random() * 100);
+    this.rate = 100 + Math.floor(Math.random() * 200);
     //console.log("Rate: " + this.rate);
 }
 
@@ -49,11 +49,18 @@ Player.prototype.update = function() {
 
 // Reset player's position to start location
 Player.prototype.reset = function() {
+  // Switch between player sprites if goal not reached
+  if (this.y > 0) {
+    this.sprite = (this.sprite.search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
+  }
+  // If player is carrying a book, modify sprite name
+  if (this.carryItem == true) {
+    this.carryItem = false;
+    this.sprite = this.sprite.replace('_w_book','');
+  }
+  // Set to start position
   this.x = 202;
   this.y = 404;
-  // Switch between player sprites each reset
-  this.sprite = ((this.sprite).search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
-  this.carryItem = false;
 }
 
 // Takes input and does something with it
@@ -118,9 +125,9 @@ Item.prototype.pickup = function() {
 
 Item.prototype.reset = function() {
   this.visible = true;
-  //TODO: randomize where item goes on page
-  this.x = 202;
-  this.y = 238;
+  this.x = Math.floor(Math.random() * 5) * 101;
+  this.y = (Math.floor(Math.random() * 4) + 1) * 83 - 11;
+  //console.log(this.x, this.y);
 }
 
 Item.prototype.render = function() {
