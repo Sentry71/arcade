@@ -103,6 +103,7 @@ var Engine = (function(global) {
       // Check for water collision.
       if(player.y < 0) {
         player.reset();
+        item.reset();
       }
 
       /* Check for enemy collision
@@ -114,9 +115,16 @@ var Engine = (function(global) {
         if(player.y - enemy.y == 10) {
           if(player.x < enemy.x + 75 && player.x + 75 > enemy.x ){
             player.reset();
+            item.reset();
           }
         }
       });
+
+      //Check for collision with item(s)
+      if(player.y === item.y && player.x === item.x) {
+        item.pickup();
+        console.log("Picked up book");
+      }
     }
 
     /* This function initially draws the "game level", it will then call
@@ -158,7 +166,6 @@ var Engine = (function(global) {
             }
         }
 
-
         renderEntities();
     }
 
@@ -167,6 +174,11 @@ var Engine = (function(global) {
      * on your enemy and player entities within app.js
      */
     function renderEntities() {
+        // Render item only if not picked up (visible = true)
+        if(item.visible === true) {
+          item.render();
+        }
+
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
@@ -195,7 +207,9 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/Mike.png',
+        'images/Mike_w_book.png',
         'images/Miriam.png',
+        'images/Miriam_w_book.png',
         'images/Book.png'
     ]);
     Resources.onReady(init);

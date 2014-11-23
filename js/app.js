@@ -51,6 +51,9 @@ Player.prototype.update = function() {
 Player.prototype.reset = function() {
   this.x = 202;
   this.y = 404;
+  // Switch between player sprites each reset
+  this.sprite = ((this.sprite).search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
+  this.carryItem = false;
 }
 
 // Takes input and does something with it
@@ -92,19 +95,47 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+//Create item class for item(s) to be picked up by player
+var Item = function (x, y) {
+  this.sprite = 'images/Book.png';
+  this.x = x;
+  this.y = y;
+  this.visible = true;
+}
+
+Item.prototype.pickup = function() {
+  this.visible = false;
+  player.carryItem = true;
+  player.sprite = [(player.sprite).slice(0,-4),'_w_book.png'].join('');
+  console.log(player.sprite);
+  item.x = -101;
+  item.y = -101;
+}
+
+Item.prototype.reset = function() {
+  this.visible = true;
+  //TODO: randomize where item goes on page
+  this.x = 202;
+  this.y = 238;
+}
+
+Item.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 allEnemies = [];
 for(i=1; i<4; i++){
-  var enemy = new Enemy(0-i*101,83*i-21);
+  var enemy = new Enemy(0-i*101, 83*i-21);
   allEnemies.push(enemy);
 }
 
 // Place item to be picked up by player
-
+var item = new Item(202, 238);
 
 // Place the player object in a variable called player
-var player = new Player(202,404);
+var player = new Player(202, 404);
 
 
 // This listens for key presses and sends the keys to your
