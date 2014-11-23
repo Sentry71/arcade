@@ -41,7 +41,7 @@ var Player = function(x,y) {
   this.carryItem = false;
 }
 
-// Update player's position
+// Update player
 Player.prototype.update = function() {
 
 
@@ -96,8 +96,9 @@ Player.prototype.render = function() {
 }
 
 //Create item class for item(s) to be picked up by player
-var Item = function (x, y) {
-  this.sprite = 'images/Book.png';
+var Item = function (name, x, y) {
+  this.name = name;
+  this.sprite = 'images/' + name + '.png';
   this.x = x;
   this.y = y;
   this.visible = true;
@@ -106,10 +107,13 @@ var Item = function (x, y) {
 Item.prototype.pickup = function() {
   this.visible = false;
   player.carryItem = true;
-  player.sprite = [(player.sprite).slice(0,-4),'_w_book.png'].join('');
+  // To change the player sprite to show item carried, change sprite name
+  // For example, Mike.png becomes Mike_w_book.png
+  player.sprite = (player.sprite).slice(0,-4) + '_w_' + this.name + '.png';
   console.log(player.sprite);
-  item.x = -101;
-  item.y = -101;
+  // Hide item off screen (to be reused on reset)
+  this.x = -101;
+  this.y = -101;
 }
 
 Item.prototype.reset = function() {
@@ -132,7 +136,7 @@ for(i=1; i<4; i++){
 }
 
 // Place item to be picked up by player
-var item = new Item(202, 238);
+var book = new Item('book',202, 238);
 
 // Place the player object in a variable called player
 var player = new Player(202, 404);
