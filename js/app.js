@@ -54,17 +54,18 @@ Player.prototype.update = function() {
 // Reset player's position to start location
 Player.prototype.reset = function() {
   // Switch between player sprites if goal not reached
-  if (this.y > 0) {
+  // or goal is reached without carrying the item
+  if (this.y > 0 || (this.y < 0 && this.carryItem == false)) {
     this.sprite = (this.sprite.search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
   }
-  // If player is carrying an item, modify sprite name to
-  // no longer display that item
+  // If player is carrying an item, set carryItem to false and
+  // modify sprite name to no longer display that item
   if (this.carryItem == true) {
     this.carryItem = false;
     var name = book.name;
     this.sprite = this.sprite.replace('_w_' + name,'');
   }
-  // Set to start position
+  // Set player to start position
   this.x = 202;
   this.y = 404;
 }
@@ -117,9 +118,12 @@ var Item = function (name, x, y) {
   this.visible = true;
 }
 
+// Steps to be carried out when an item is picked up by the player
 Item.prototype.pickup = function() {
+  // Set parameters for objects
   this.visible = false;
   player.carryItem = true;
+
   // Change player sprite name to show item carried
   // For example, Mike.png becomes Mike_w_book.png
   player.sprite = (player.sprite).slice(0,-4) + '_w_' + this.name + '.png';
@@ -129,13 +133,17 @@ Item.prototype.pickup = function() {
   this.y = -101;
 }
 
+// Reset will set item on game board to be picked up
 Item.prototype.reset = function() {
+  // Set parameters
   this.visible = true;
+
+  // Randomize location of item on game board
   this.x = Math.floor(Math.random() * 5) * 101;
   this.y = (Math.floor(Math.random() * 4) + 1) * 83 - 11;
-  //console.log(this.x, this.y);
 }
 
+// Draw the item on the game board
 Item.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
