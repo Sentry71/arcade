@@ -53,10 +53,12 @@ Player.prototype.reset = function() {
   if (this.y > 0) {
     this.sprite = (this.sprite.search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
   }
-  // If player is carrying a book, modify sprite name
+  // If player is carrying an item, modify sprite name to
+  // no longer display that item
   if (this.carryItem == true) {
     this.carryItem = false;
-    this.sprite = this.sprite.replace('_w_book','');
+    var name = book.name;
+    this.sprite = this.sprite.replace('_w_' + name,'');
   }
   // Set to start position
   this.x = 202;
