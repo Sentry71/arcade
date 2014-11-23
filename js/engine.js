@@ -25,7 +25,7 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
+    canvas.width = 707;
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
@@ -100,7 +100,7 @@ var Engine = (function(global) {
     /* Check collisions
     */
     function checkCollisions(){
-      // Check for water collision.
+      // Check for collision with top row.
       if(player.y < 0) {
         player.reset();
         book.reset();
@@ -109,7 +109,7 @@ var Engine = (function(global) {
         });
       }
 
-      /* Check for enemy collision
+      /* Check for enemy collision.
        * Allow for 10 pixel difference in alignment of enemy and player
        * Y positions on the same row, due to centering of sprites.
        * Collision occurs when opposite side X coords are within 75 pixels.
@@ -140,7 +140,7 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/wood-block.png',   // Top row is wood
+                'images/wood-block.png',    // Top row is wood
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
@@ -148,7 +148,7 @@ var Engine = (function(global) {
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
             numRows = 6,
-            numCols = 5,
+            numCols = 7,
             row, col;
 
         /* Loop through the number of rows and columns we've defined above

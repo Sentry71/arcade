@@ -8,7 +8,7 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.rate = 100 + Math.floor(Math.random() * 200);
+    this.rate = 100 + 50 * game.level + Math.floor(Math.random() * 150);
 }
 
 // Update the enemy's position, required method for game
@@ -19,15 +19,15 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x = this.x + (dt * this.rate);
 
-    // When bug goes off the one side, reappear on the other side
-    if (this.x > 500){
+    // When bug goes off one side, reappear on the other side
+    if (this.x > 700){
       this.x = -100;
     }
 }
 
 // Reset enemy bugs when level completed
 Enemy.prototype.reset = function() {
-  this.x = 0 - Math.random() * 200;
+  this.x = 0 - Math.random() * 400;
 }
 
 // Draw the enemy on the screen, required method for game
@@ -43,6 +43,7 @@ var Player = function(x,y) {
   this.x = x;
   this.y = y;
   this.carryItem = false;
+  this.level = 1;
 }
 
 // Update player
@@ -53,8 +54,11 @@ Player.prototype.update = function() {
 
 // Reset player's position to start location
 Player.prototype.reset = function() {
-  // Switch between player sprites if goal not reached
-  // or goal is reached without carrying the item
+  /* Switch between player sprites if top row not reached
+   * or top row is reached without carrying the item.
+   * Switching is based on the sprite name. Since we toggle
+   * between two images, a ternary operator is used.
+   */
   if (this.y > 0 || (this.y < 0 && this.carryItem == false)) {
     this.sprite = (this.sprite.search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
   }
@@ -64,9 +68,10 @@ Player.prototype.reset = function() {
     this.carryItem = false;
     var name = book.name;
     this.sprite = this.sprite.replace('_w_' + name,'');
+    this.level++;
   }
   // Set player to start position
-  this.x = 202;
+  this.x = 303;
   this.y = 404;
 }
 
@@ -84,7 +89,7 @@ Player.prototype.handleInput = function(key) {
       }
       break;
     case 'down':
-      if (this.y < 404) {
+      if (this.y < 606) {
         this.y += 83;
       }
       break;
@@ -94,9 +99,12 @@ Player.prototype.handleInput = function(key) {
       }
       break;
     case 'right':
-      if (this.x < 404){
+      if (this.x < 606){
         this.x += 101;
       }
+      break;
+    case 'pause':
+      //TODO: call pause
       break;
   }
 
@@ -156,11 +164,13 @@ for(i=1; i<4; i++){
   allEnemies.push(enemy);
 }
 
-// Place book to be picked up by player
-var book = new Item('book', 202, 238);
+// Instantiate book offscreen to be picked up by player,
+// then randomize its location to start
+var book = new Item('book', -100, -100);
+book.reset();
 
 // Place the player object in a variable called player
-var player = new Player(202, 404);
+var player = new Player(303, 404);
 
 
 // This listens for key presses and sends the keys to your
@@ -170,7 +180,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        80: 'pause'
     };
 
     //Write keyCode and "definition" to console for debugging
