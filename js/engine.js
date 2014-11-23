@@ -120,7 +120,7 @@ var Engine = (function(global) {
         }
       });
 
-      //Check for collision with item(s)
+      //Check for collision with the book
       if(player.y === book.y && player.x === book.x) {
         book.pickup();
       }

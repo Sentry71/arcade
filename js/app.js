@@ -110,7 +110,7 @@ Item.prototype.pickup = function() {
   // To change the player sprite to show item carried, change sprite name
   // For example, Mike.png becomes Mike_w_book.png
   player.sprite = (player.sprite).slice(0,-4) + '_w_' + this.name + '.png';
-  console.log(player.sprite);
+
   // Hide item off screen (to be reused on reset)
   this.x = -101;
   this.y = -101;
@@ -135,8 +135,8 @@ for(i=1; i<4; i++){
   allEnemies.push(enemy);
 }
 
-// Place item to be picked up by player
-var book = new Item('book',202, 238);
+// Place book to be picked up by player
+var book = new Item('book', 202, 238);
 
 // Place the player object in a variable called player
 var player = new Player(202, 404);
