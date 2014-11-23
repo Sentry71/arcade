@@ -104,6 +104,9 @@ var Engine = (function(global) {
       if(player.y < 0) {
         player.reset();
         book.reset();
+        allEnemies.forEach(function(enemy) {
+          enemy.reset();
+        });
       }
 
       /* Check for enemy collision

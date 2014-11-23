@@ -9,7 +9,6 @@ var Enemy = function(x, y) {
     this.x = x;
     this.y = y;
     this.rate = 100 + Math.floor(Math.random() * 200);
-    //console.log("Rate: " + this.rate);
 }
 
 // Update the enemy's position, required method for game
@@ -24,6 +23,11 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 500){
       this.x = -100;
     }
+}
+
+// Reset enemy bugs when level completed
+Enemy.prototype.reset = function() {
+  this.x = 0 - Math.random() * 200;
 }
 
 // Draw the enemy on the screen, required method for game
@@ -116,7 +120,7 @@ var Item = function (name, x, y) {
 Item.prototype.pickup = function() {
   this.visible = false;
   player.carryItem = true;
-  // To change the player sprite to show item carried, change sprite name
+  // Change player sprite name to show item carried
   // For example, Mike.png becomes Mike_w_book.png
   player.sprite = (player.sprite).slice(0,-4) + '_w_' + this.name + '.png';
 
