@@ -1,6 +1,5 @@
 // Create "global" game variables
 var paused = false;
-var level = 0;
 
 var togglePause = function() {
   paused = !paused;
@@ -166,6 +165,12 @@ Item.prototype.reset = function() {
   this.visible = true;
 }
 
+// Hide item when no longer needed (end game, etc.)
+Item.prototype.hide = function() {
+  this.visible = false;
+  player.carryItem = false;
+}
+
 // Draw the item on the game board
 Item.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -175,7 +180,7 @@ Item.prototype.render = function() {
 // scoring row.
 var ScorePosition = function(name, x) {
   this.x = x;
-  this.y = 0;
+  this.y = -11;
   this.sprite = 'images/' + name + '.png';
 }
 

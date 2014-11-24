@@ -97,27 +97,35 @@ var Engine = (function(global) {
         player.update();
     }
 
-    /* Check collisions
-    */
+    // Check collisions
     function checkCollisions(){
       // Check for collision with scoring row.
       if(player.y < 0) {
+        // Verify player is colliding with an open position.
         var openSlot = true;
         allScorePositions.forEach(function(pos) {
-          if(player.x == pos.x){
+          if(player.x === pos.x){
             openSlot = false;
           }
         });
-        if(openSlot == true) {
+        // If position is open, add book.
+        if(openSlot === true) {
           var score = new ScorePosition('book',player.x);
           allScorePositions.push(score);
-          player.reset();
-          book.reset();
-          allEnemies.forEach(function(enemy) {
-            enemy.increaseRate();
-            enemy.reset();
-          });
+          // If all positions filled, end game.
+          if (allScorePositions.length == 7){
+            gameOver();
+          } else {
+            // Reset entities for next round.
+            player.reset();
+            book.reset();
+            allEnemies.forEach(function(enemy) {
+              enemy.increaseRate();
+              enemy.reset();
+            });
+          }
         }else{
+          // Otherwise, leave player where they are.
           player.y += 83;
         }
       }
@@ -140,6 +148,12 @@ var Engine = (function(global) {
       if(player.y === book.y && player.x === book.x) {
         book.pickup();
       }
+    }
+
+    function gameOver() {
+      allEnemies = [];
+      player.reset();
+      book.hide();
     }
 
     /* This function initially draws the "game level", it will then call
