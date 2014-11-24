@@ -16,7 +16,7 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.rate = 100 + level * 50 + Math.floor(Math.random() * 150);
+    this.rate = 100 + Math.floor(Math.random() * 150);
 }
 
 // Update the enemy's position, required method for game
@@ -38,6 +38,11 @@ Enemy.prototype.update = function(dt) {
 // Reset enemy bugs when level completed
 Enemy.prototype.reset = function() {
   this.x = 0 - Math.random() * 300;
+}
+
+Enemy.prototype.increaseRate = function() {
+  this.rate += Math.floor(Math.random() * 50);
+  console.log("Rate increased to " + this.rate);
 }
 
 // Draw the enemy on the screen, required method for game
@@ -74,7 +79,6 @@ Player.prototype.reset = function() {
   if (this.carryItem === true) {
     this.carryItem = false;
     this.sprite = this.sprite.replace('_w_' + book.name,'');
-    this.level++;
   }
   // Set player to start position
   this.x = 303;
@@ -95,7 +99,7 @@ Player.prototype.handleInput = function(key) {
       }
       break;
     case 'down':
-      if (this.y < 606 && !paused) {
+      if (this.y < 404 && !paused) {
         this.y += 83;
       }
       break;
@@ -115,7 +119,7 @@ Player.prototype.handleInput = function(key) {
   }
 
   //Log location to console for debugging
-  //console.log("Location: x " + this.x + " : y " + this.y);
+  console.log("Location: x " + this.x + " : y " + this.y);
 }
 
 //Draw player on the screen
@@ -147,20 +151,19 @@ Item.prototype.pickup = function() {
   this.y = -101;
 }
 
+Item.prototype.drop = function() {
+  this.visible = true;
+  player.carryItem = false;
+  this.x = player.x;
+  this.y = player.y;
+}
+
 // Reset will set item on game board to be picked up
 Item.prototype.reset = function() {
-  // Set parameters
+  // Randomize the location of the item.
+  this.x = Math.floor(Math.random() * 5) * 101;
+  this.y = (Math.floor(Math.random() * 4) + 1) * 83 - 11;
   this.visible = true;
-
-  // If the player is carrying the item, drop the item where the
-  // player was. Otherwise, randomize the location of the item.
-  if (player.carryItem === true && player.x < 0){
-    this.x = player.x;
-    this.y = player.y;
-  } else {
-    this.x = Math.floor(Math.random() * 5) * 101;
-    this.y = (Math.floor(Math.random() * 4) + 1) * 83 - 11;
-  }
 }
 
 // Draw the item on the game board

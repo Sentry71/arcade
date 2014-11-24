@@ -105,6 +105,7 @@ var Engine = (function(global) {
         player.reset();
         book.reset();
         allEnemies.forEach(function(enemy) {
+          enemy.increaseRate();
           enemy.reset();
         });
       }
@@ -117,13 +118,13 @@ var Engine = (function(global) {
       allEnemies.forEach(function(enemy) {
         if(player.y - enemy.y == 10) {
           if(player.x < enemy.x + 75 && player.x + 75 > enemy.x ){
-            book.reset();
+            book.drop();
             player.reset();
           }
         }
       });
 
-      //Check for collision with the book
+      //Check for collision between player and the book, and take book.
       if(player.y === book.y && player.x === book.x) {
         book.pickup();
       }
