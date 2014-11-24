@@ -57,21 +57,20 @@ addAnEnemy = function() {
    */
   var rows = 4;
   var count = allEnemies.length + 1;
-  console.log(count);
+  // Loop to top if count > rows available.
   if (count > rows) {
     count -= rows;
   }
-  console.log(count);
+  // Add the enemy to the allEnemies array
   var enemy = new Enemy(-150, (count * 83) - 21);
   allEnemies.push(enemy);
-  console.log("New enemy on row coord: " + enemy.y);
 }
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(x,y) {
-  this.sprite = 'images/Mike.png';
+  this.sprite = 'images/Miriam.png';
   this.x = x;
   this.y = y;
   this.carryItem = false;
