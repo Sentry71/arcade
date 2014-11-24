@@ -81,6 +81,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
+        updateScoringRow();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -99,37 +100,6 @@ var Engine = (function(global) {
 
     // Check collisions
     function checkCollisions(){
-      // Check for collision with scoring row.
-      if(player.y < 0) {
-        // Verify player is colliding with an open position.
-        var openSlot = true;
-        allScorePositions.forEach(function(pos) {
-          if(player.x === pos.x){
-            openSlot = false;
-          }
-        });
-        // If position is open, add book.
-        if(openSlot === true) {
-          var score = new ScorePosition('book',player.x);
-          allScorePositions.push(score);
-          // If all positions filled, end game.
-          if (allScorePositions.length == 7){
-            gameOver();
-          } else {
-            // Reset entities for next round.
-            player.reset();
-            book.reset();
-            allEnemies.forEach(function(enemy) {
-              enemy.increaseRate();
-              enemy.reset();
-            });
-          }
-        }else{
-          // Otherwise, leave player where they are.
-          player.y += 83;
-        }
-      }
-
       /* Check for enemy collision.
        * Allow for 10 pixel difference in alignment of enemy and player
        * Y positions on the same row, due to centering of sprites.
@@ -149,6 +119,44 @@ var Engine = (function(global) {
         book.pickup();
       }
     }
+
+
+    function updateScoringRow() {
+      // Check if player has reached the scoring row.
+      if(player.y < 0) {
+        // Verify player is at with an open position. Set openSlot boolean
+        // to indicate if there is an open spot above the player.
+        var openSlot = true;
+        allScorePositions.forEach(function(pos) {
+          if(player.x === pos.x){
+            openSlot = false;
+          }
+        });
+        // If position is open, add book.
+        if(openSlot === true) {
+          var score = new ScorePosition('book',player.x);
+          allScorePositions.push(score);
+          // If all positions filled, end game.
+          if (allScorePositions.length == 7){
+            gameOver();
+          } else {
+            // Add another bug to the array.
+            addAnEnemy();
+            // Reset entities for next round.
+            player.reset();
+            book.reset();
+            allEnemies.forEach(function(enemy) {
+              enemy.increaseRate();
+              enemy.reset();
+            });
+          }
+        }else{
+          // If the position is not open, put player back where they were.
+          player.y += 83;
+        }
+      }
+    }
+
 
     function gameOver() {
       allEnemies = [];

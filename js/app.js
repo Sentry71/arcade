@@ -41,12 +41,30 @@ Enemy.prototype.reset = function() {
 
 Enemy.prototype.increaseRate = function() {
   this.rate += Math.floor(Math.random() * 50);
-  console.log("Rate increased to " + this.rate);
+  //console.log("Rate increased to " + this.rate);
 }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+//Increase number of enemies at end of succesful run.
+addAnEnemy = function() {
+  /* Determine what row to put the new enemy on. This is determined
+   * by finding how many enemies there are, and adding one to the next
+   * stone row. When all rows are filled, start again at the first stone row.
+   */
+  var rows = 4;
+  var count = allEnemies.length + 1;
+  console.log(count);
+  if (count > rows) {
+    count -= rows;
+  }
+  console.log(count);
+  var enemy = new Enemy(-150, (count * 83) - 21);
+  allEnemies.push(enemy);
+  console.log("New enemy on row coord: " + enemy.y);
 }
 
 // Now write your own player class
