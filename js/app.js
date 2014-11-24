@@ -154,13 +154,13 @@ Item.prototype.reset = function() {
 
   // If the player is carrying the item, drop the item where the
   // player was. Otherwise, randomize the location of the item.
-  //if (player.carryItem === true && player.x < 0){
-  //  this.x = player.x;
-  //  this.y = player.y;
-  //} else {
+  if (player.carryItem === true && player.x < 0){
+    this.x = player.x;
+    this.y = player.y;
+  } else {
     this.x = Math.floor(Math.random() * 5) * 101;
     this.y = (Math.floor(Math.random() * 4) + 1) * 83 - 11;
-  //}
+  }
 }
 
 // Draw the item on the game board
