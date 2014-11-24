@@ -119,7 +119,7 @@ Player.prototype.handleInput = function(key) {
   }
 
   //Log location to console for debugging
-  console.log("Location: x " + this.x + " : y " + this.y);
+  //console.log("Location: x " + this.x + " : y " + this.y);
 }
 
 //Draw player on the screen
@@ -171,6 +171,19 @@ Item.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+// Create item to hold information about where an item has been placed on the
+// scoring row.
+var ScorePosition = function(name, x) {
+  this.x = x;
+  this.y = 0;
+  this.sprite = 'images/' + name + '.png';
+}
+
+//Draw items on scoring row
+ScorePosition.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 allEnemies = [];
@@ -178,6 +191,14 @@ for(i=1; i<4; i++){
   var enemy = new Enemy(0-i*101, 83*i-21);
   allEnemies.push(enemy);
 }
+
+// Create array to hold items in scoring position. Prepopulate start and end
+// positions (walls) as nonusable.
+var allScorePositions = [];
+var score = new ScorePosition('blank',0);
+allScorePositions.push(score);
+var score2 = new ScorePosition('blank',606);
+allScorePositions.push(score2);
 
 // Instantiate book offscreen, then randomize its location to start
 var book = new Item('book', -100, -100);

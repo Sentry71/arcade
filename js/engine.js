@@ -100,14 +100,26 @@ var Engine = (function(global) {
     /* Check collisions
     */
     function checkCollisions(){
-      // Check for collision with top row.
+      // Check for collision with scoring row.
       if(player.y < 0) {
-        player.reset();
-        book.reset();
-        allEnemies.forEach(function(enemy) {
-          enemy.increaseRate();
-          enemy.reset();
+        var openSlot = true;
+        allScorePositions.forEach(function(pos) {
+          if(player.x == pos.x){
+            openSlot = false;
+          }
         });
+        if(openSlot == true) {
+          var score = new ScorePosition('book',player.x);
+          allScorePositions.push(score);
+          player.reset();
+          book.reset();
+          allEnemies.forEach(function(enemy) {
+            enemy.increaseRate();
+            enemy.reset();
+          });
+        }else{
+          player.y += 83;
+        }
       }
 
       /* Check for enemy collision.
@@ -137,39 +149,60 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
-        var rowImages = [
-                'images/wood-block.png',    // Top row is wood
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
-            ],
-            numRows = 6,
-            numCols = 7,
-            row, col;
+      // Call function to render the top row.
+      var topRowTiles = [
+        'images/tall-wall.png',
+        'images/wood-block.png',
+        'images/wood-block.png',
+        'images/wood-block.png',
+        'images/wood-block.png',
+        'images/wood-block.png',
+        'images/tall-wall.png'
+      ];
 
-        /* Loop through the number of rows and columns we've defined above
-         * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
-         */
-        for (row = 0; row < numRows; row++) {
-            for (col = 0; col < numCols; col++) {
-                /* The drawImage function of the canvas' context element
-                 * requires 3 parameters: the image to draw, the x coordinate
-                 * to start drawing and the y coordinate to start drawing.
-                 * We're using our Resources helpers to refer to our images
-                 * so that we get the benefits of caching these images, since
-                 * we're using them over and over.
-                 */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
-            }
+      /* This array holds the relative URL to the image used
+       * for that particular row of the game level.
+       */
+      var rowImages = [
+          'images/wood-block.png',    // Top row is wood (no longer used)
+          'images/stone-block.png',   // Row 1 of 3 of stone
+          'images/stone-block.png',   // Row 2 of 3 of stone
+          'images/stone-block.png',   // Row 3 of 3 of stone
+          'images/stone-block.png',   // Row 1 of 2 of grass
+          'images/grass-block.png'    // Row 2 of 2 of grass
+        ],
+        numRows = 6,
+        numCols = 7,
+        row, col;
+
+      // Loop through the number of columns to draw the specific top row tiles
+      for (col = 0; col < numCols; col++) {
+        ctx.drawImage(Resources.get(topRowTiles[col]), col * 101, 0);
+      }
+
+      // Call images specifically for top row decoration AFTER the top row
+      // is rendered, so they draw on top of the base tiles.
+      ctx.drawImage(Resources.get('images/roof-se.png'), 0, -83);
+      ctx.drawImage(Resources.get('images/roof-sw.png'), 606, -83);
+
+      /* Loop through the number of rows and columns we've defined above
+       * and, using the rowImages array, draw the correct image for that
+       * portion of the "grid"
+       */
+      for (row = 1; row < numRows; row++) {
+        for (col = 0; col < numCols; col++) {
+          /* The drawImage function of the canvas' context element
+           * requires 3 parameters: the image to draw, the x coordinate
+           * to start drawing and the y coordinate to start drawing.
+           * We're using our Resources helpers to refer to our images
+           * so that we get the benefits of caching these images, since
+           * we're using them over and over.
+           */
+          ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
         }
+      }
 
-        renderEntities();
+      renderEntities();
     }
 
     /* This function is called by the render function and is called on each game
@@ -177,19 +210,24 @@ var Engine = (function(global) {
      * on your enemy and player entities within app.js
      */
     function renderEntities() {
-        // Render item only if not picked up (visible = true)
-        if(book.visible === true) {
-          book.render();
-        }
+      // Render books on top row from successful placements by player
+      allScorePositions.forEach(function(pos) {
+        pos.render();
+      });
 
-        /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
-         */
-        allEnemies.forEach(function(enemy) {
-            enemy.render();
-        });
+      // Render item only if not picked up (visible = true)
+      if(book.visible === true) {
+        book.render();
+      }
 
-        player.render();
+      /* Loop through all of the objects within the allEnemies array and call
+       * the render function you have defined.
+       */
+      allEnemies.forEach(function(enemy) {
+        enemy.render();
+      });
+
+      player.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -197,7 +235,7 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+      // noop
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -205,15 +243,19 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
-        'images/stone-block.png',
-        'images/wood-block.png',
-        'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/Mike.png',
-        'images/Mike_w_book.png',
-        'images/Miriam.png',
-        'images/Miriam_w_book.png',
-        'images/book.png'
+      'images/stone-block.png',
+      'images/wood-block.png',
+      'images/grass-block.png',
+      'images/enemy-bug.png',
+      'images/Mike.png',
+      'images/Mike_w_book.png',
+      'images/Miriam.png',
+      'images/Miriam_w_book.png',
+      'images/book.png',
+      'images/tall-wall.png',
+      'images/roof-se.png',
+      'images/roof-sw.png',
+      'images/blank.png'
     ]);
     Resources.onReady(init);
 
