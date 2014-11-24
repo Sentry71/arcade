@@ -117,8 +117,8 @@ var Engine = (function(global) {
       allEnemies.forEach(function(enemy) {
         if(player.y - enemy.y == 10) {
           if(player.x < enemy.x + 75 && player.x + 75 > enemy.x ){
-            player.reset();
             book.reset();
+            player.reset();
           }
         }
       });

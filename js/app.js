@@ -1,3 +1,11 @@
+// Create "global" game variables
+var paused = false;
+var level = 0;
+
+var togglePause = function() {
+  paused = !paused;
+}
+
 // Enemies our player must avoid
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
@@ -8,7 +16,7 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.rate = 100 + 50 * game.level + Math.floor(Math.random() * 150);
+    this.rate = 100 + level * 50 + Math.floor(Math.random() * 150);
 }
 
 // Update the enemy's position, required method for game
@@ -17,7 +25,9 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = this.x + (dt * this.rate);
+    if (!paused){
+      this.x = this.x + (dt * this.rate);
+    }
 
     // When bug goes off one side, reappear on the other side
     if (this.x > 700){
@@ -27,7 +37,7 @@ Enemy.prototype.update = function(dt) {
 
 // Reset enemy bugs when level completed
 Enemy.prototype.reset = function() {
-  this.x = 0 - Math.random() * 400;
+  this.x = 0 - Math.random() * 300;
 }
 
 // Draw the enemy on the screen, required method for game
@@ -43,31 +53,27 @@ var Player = function(x,y) {
   this.x = x;
   this.y = y;
   this.carryItem = false;
-  this.level = 1;
 }
 
-// Update player
 Player.prototype.update = function() {
-
-
+  // Unused at this time.
 }
 
 // Reset player's position to start location
 Player.prototype.reset = function() {
   /* Switch between player sprites if top row not reached
    * or top row is reached without carrying the item.
-   * Switching is based on the sprite name. Since we toggle
-   * between two images, a ternary operator is used.
+   * Switching is based on a serach against the sprite name.
+   * A ternary operator is used to alternate between images.
    */
   if (this.y > 0 || (this.y < 0 && this.carryItem == false)) {
     this.sprite = (this.sprite.search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
   }
   // If player is carrying an item, set carryItem to false and
   // modify sprite name to no longer display that item
-  if (this.carryItem == true) {
+  if (this.carryItem === true) {
     this.carryItem = false;
-    var name = book.name;
-    this.sprite = this.sprite.replace('_w_' + name,'');
+    this.sprite = this.sprite.replace('_w_' + book.name,'');
     this.level++;
   }
   // Set player to start position
@@ -84,32 +90,32 @@ Player.prototype.reset = function() {
 Player.prototype.handleInput = function(key) {
   switch(key) {
     case 'up':
-      if (this.y > 0){
+      if (this.y > 0 && !paused){
         this.y -= 83;
       }
       break;
     case 'down':
-      if (this.y < 606) {
+      if (this.y < 606 && !paused) {
         this.y += 83;
       }
       break;
     case 'left':
-      if (this.x > 0) {
+      if (this.x > 0 && !paused) {
         this.x -= 101;
       }
       break;
     case 'right':
-      if (this.x < 606){
+      if (this.x < 606 && !paused){
         this.x += 101;
       }
       break;
     case 'pause':
-      //TODO: call pause
+      togglePause();
       break;
   }
 
   //Log location to console for debugging
-  console.log("Location: x " + this.x + " : y " + this.y);
+  //console.log("Location: x " + this.x + " : y " + this.y);
 }
 
 //Draw player on the screen
@@ -134,7 +140,7 @@ Item.prototype.pickup = function() {
 
   // Change player sprite name to show item carried
   // For example, Mike.png becomes Mike_w_book.png
-  player.sprite = (player.sprite).slice(0,-4) + '_w_' + this.name + '.png';
+  player.sprite = player.sprite.slice(0,-4) + '_w_' + this.name + '.png';
 
   // Hide item off screen (to be reused on reset)
   this.x = -101;
@@ -146,9 +152,15 @@ Item.prototype.reset = function() {
   // Set parameters
   this.visible = true;
 
-  // Randomize location of item on game board
-  this.x = Math.floor(Math.random() * 5) * 101;
-  this.y = (Math.floor(Math.random() * 4) + 1) * 83 - 11;
+  // If the player is carrying the item, drop the item where the
+  // player was. Otherwise, randomize the location of the item.
+  //if (player.carryItem === true && player.x < 0){
+  //  this.x = player.x;
+  //  this.y = player.y;
+  //} else {
+    this.x = Math.floor(Math.random() * 5) * 101;
+    this.y = (Math.floor(Math.random() * 4) + 1) * 83 - 11;
+  //}
 }
 
 // Draw the item on the game board
@@ -164,8 +176,7 @@ for(i=1; i<4; i++){
   allEnemies.push(enemy);
 }
 
-// Instantiate book offscreen to be picked up by player,
-// then randomize its location to start
+// Instantiate book offscreen, then randomize its location to start
 var book = new Item('book', -100, -100);
 book.reset();
 
