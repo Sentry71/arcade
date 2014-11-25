@@ -1,9 +1,9 @@
-// Create "global" pause variable.
+// Create "global" pause variable, initialize to off (false).
 var paused = false;
 
 // Toggle between paused and un-paused states by blocking updates.
 // This boolean is used in Enemy.update and Player.handleInput
-var togglePause = function() {
+function togglePause() {
   paused = !paused;
 }
 
@@ -41,9 +41,9 @@ Enemy.prototype.reset = function() {
   this.x = 0 - Math.random() * 200;
 }
 
-// Increase speed of enemies slightly.
+// Increase speed of enemies slightly
 Enemy.prototype.increaseRate = function() {
-  this.rate += Math.floor(Math.random() * 50);
+  this.rate += 50;
 }
 
 // Draw the enemy on the screen, required method for game
@@ -142,6 +142,9 @@ Player.prototype.handleInput = function(key) {
     case 'pause':
       togglePause();
       break;
+    case 'restart':
+      gameReset();
+      break;
   }
 
   //Log location to console for debugging
@@ -217,29 +220,32 @@ ScorePosition.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-allEnemies = [];
-for(i=1; i<4; i++){
-  var enemy = new Enemy(0-i*101, 83*i-21);
-  allEnemies.push(enemy);
+// Initialize game asset variables. This is called on startup of the game,
+// or if the player presses R on the keyboard.
+function gameReset() {
+  // Now instantiate your objects.
+  // Place all enemy objects in an array called allEnemies
+  allEnemies = [];
+  for(i=1; i<4; i++){
+    var enemy = new Enemy(0-i*101, 83*i-21);
+    allEnemies.push(enemy);
+  }
+
+  // Create array to hold items in scoring position. Prepopulate start and end
+  // positions (walls) as nonusable.
+  allScorePositions = [];
+  var score = new ScorePosition('blank',0);
+  allScorePositions.push(score);
+  var score2 = new ScorePosition('blank',606);
+  allScorePositions.push(score2);
+
+  // Instantiate book offscreen, then randomize its location to start
+  book = new Item('book', -100, -100);
+  book.reset();
+
+  // Place the player object in a variable called player
+  player = new Player(303, 404);
 }
-
-// Create array to hold items in scoring position. Prepopulate start and end
-// positions (walls) as nonusable.
-var allScorePositions = [];
-var score = new ScorePosition('blank',0);
-allScorePositions.push(score);
-var score2 = new ScorePosition('blank',606);
-allScorePositions.push(score2);
-
-// Instantiate book offscreen, then randomize its location to start
-var book = new Item('book', -100, -100);
-book.reset();
-
-// Place the player object in a variable called player
-var player = new Player(303, 404);
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -249,7 +255,8 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        80: 'pause'
+        80: 'pause',
+        82: 'restart'
     };
 
     //Write keyCode and "definition" to console for debugging
