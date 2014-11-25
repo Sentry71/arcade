@@ -250,17 +250,21 @@ function gameReset() {
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-        80: 'pause',
-        82: 'restart'
-    };
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down',
+    65: 'left',      // A
+    68: 'right',     // D
+    83: 'down',      // S
+    80: 'pause',
+    82: 'restart',
+    87: 'up'         // W
+  };
 
-    //Write keyCode and "definition" to console for debugging
-    //console.log(e.keyCode, allowedKeys[e.keyCode]);
+  //Write keyCode and "definition" to console for debugging
+  //console.log(e.keyCode, allowedKeys[e.keyCode]);
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
