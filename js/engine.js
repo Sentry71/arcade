@@ -135,7 +135,7 @@ var Engine = (function(global) {
             openSlot = false;
           }
         });
-        // If position is open, add book.
+        // If position is open, add book. 
         if(openSlot === true && player.carryItem == true) {
           var score = new ScorePosition('book',player.x);
           allScorePositions.push(score);
@@ -272,7 +272,6 @@ var Engine = (function(global) {
       'images/wood-block.png',
       'images/grass-block.png',
       'images/enemy-bug.png',
-      'images/enemy-bug-rev.png',
       'images/Mike.png',
       'images/Mike_w_book.png',
       'images/Miriam.png',

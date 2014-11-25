@@ -14,16 +14,10 @@ var Enemy = function(x, y) {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
+    this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    if (allEnemies.length >= 4){
-      this.sprite = 'images/enemy-bug-rev.png';
-      this.rate = -100 - Math.floor(Math.random() * 150);
-    } else {
-      this.sprite = 'images/enemy-bug.png';
-      this.rate = 100 + Math.floor(Math.random() * 150);
-    }
-
+    this.rate = 100 + Math.floor(Math.random() * 150);
 }
 
 // Update the enemy's position, required method for game
@@ -37,10 +31,8 @@ Enemy.prototype.update = function(dt) {
     }
 
     // When bug goes off one side, reappear on the other side
-    if (this.x > 700 && this.rate > 0) {
+    if (this.x > 700){
       this.x = -100;
-    } else if (this.x < -100 && this.rate < 0) {
-      this.x = 700;
     }
 }
 
@@ -51,7 +43,7 @@ Enemy.prototype.reset = function() {
 
 // Increase speed of enemies slightly.
 Enemy.prototype.increaseRate = function() {
-  this.rate += Math.floor(Math.random() * 75);
+  this.rate += Math.floor(Math.random() * 50);
 }
 
 // Draw the enemy on the screen, required method for game
