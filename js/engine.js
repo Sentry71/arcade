@@ -135,7 +135,7 @@ var Engine = (function(global) {
             openSlot = false;
           }
         });
-        // If position is open, add book. 
+        // If position is open, add book.
         if(openSlot === true && player.carryItem == true) {
           var score = new ScorePosition('book',player.x);
           allScorePositions.push(score);
@@ -280,7 +280,8 @@ var Engine = (function(global) {
       'images/tall-wall.png',
       'images/roof-se.png',
       'images/roof-sw.png',
-      'images/blank.png'
+      'images/blank.png',
+      'images/cloud.png'
     ]);
     Resources.onReady(init);
 

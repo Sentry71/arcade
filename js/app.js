@@ -150,7 +150,7 @@ Player.prototype.handleInput = function(key) {
 
 //Draw player on the screen
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 
