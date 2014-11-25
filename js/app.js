@@ -247,10 +247,36 @@ function gameReset() {
   player = new Player(303, 404);
 }
 
+
+// Create actors for intro/gameOver dialogs
+var Actor = function(name, x, y) {
+  this.sprite = 'images/' + name + '.png';
+  this.x = x;
+  this.y = y;
+  this.talking = false;
+}
+
+// Draw actor on game board
+Actor.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  // TODO: add bubble extension to point to talking actor
+}
+
+// Initialize intro characters, place in allActors array.
+function initIntro() {
+  allActors= [];
+  var actor1 = new Actor('Miriam', 202, 321);
+  allActors.push(actor1);
+  var actor2 = new Actor('Mike', 404, 321);
+  allActors.push(actor2);
+}
+
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
   var allowedKeys = {
+    32: 'spacebar',
     37: 'left',
     38: 'up',
     39: 'right',

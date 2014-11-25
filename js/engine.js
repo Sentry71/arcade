@@ -23,6 +23,7 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        intro = true,
         lastTime;
 
     canvas.width = 707;
@@ -41,6 +42,7 @@ var Engine = (function(global) {
          */
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
+
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -64,7 +66,8 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
+        initIntro();
         lastTime = Date.now();
         main();
     }
@@ -79,9 +82,11 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
+      if (!intro) {
         updateEntities(dt);
         checkCollisions();
         updateScoringRow();
+      }
     }
 
     /* This is called by the update function  and loops through all of the
@@ -207,8 +212,8 @@ var Engine = (function(global) {
 
       // Call images specifically for top row decoration AFTER the top row
       // is rendered, so they draw on top of the base tiles.
-      ctx.drawImage(Resources.get('images/roof-se.png'), 0, -83);
-      ctx.drawImage(Resources.get('images/roof-sw.png'), 606, -83);
+      ctx.drawImage(Resources.get('images/roof-se.png'), 0, -81);
+      ctx.drawImage(Resources.get('images/roof-sw.png'), 606, -81);
 
       /* Loop through the number of rows and columns we've defined above
        * and, using the rowImages array, draw the correct image for that
@@ -227,8 +232,25 @@ var Engine = (function(global) {
         }
       }
 
-      renderEntities();
+      //If showing intro, render those entities. Otherwise, render game.
+      if (intro) {
+        renderIntro();
+      } else {
+        renderEntities();
+      }
     }
+
+
+    /* This function is called to draw the intro scene. It uses the Actor
+     * constructor to create items, as they are not player controlled.
+     */
+    function renderIntro() {
+      allActors.forEach(function(actor) {
+        actor.render();
+      });
+      //bubble.render();
+    }
+
 
     /* This function is called by the render function and is called on each game
      * tick. It's purpose is to then call the render functions you have defined
