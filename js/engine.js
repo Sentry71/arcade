@@ -135,8 +135,8 @@ var Engine = (function(global) {
             openSlot = false;
           }
         });
-        // If position is open, add book.
-        if(openSlot === true) {
+        // If position is open, add book. 
+        if(openSlot === true && player.carryItem == true) {
           var score = new ScorePosition('book',player.x);
           allScorePositions.push(score);
           // If all positions filled, end game.

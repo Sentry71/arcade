@@ -1,6 +1,8 @@
-// Create "global" game variables
+// Create "global" pause variable.
 var paused = false;
 
+// Toggle between paused and un-paused states by blocking updates.
+// This boolean is used in Enemy.update and Player.handleInput
 var togglePause = function() {
   paused = !paused;
 }
@@ -34,14 +36,14 @@ Enemy.prototype.update = function(dt) {
     }
 }
 
-// Reset enemy bugs when level completed
+// Randomize start location of enemies when level completed
 Enemy.prototype.reset = function() {
-  this.x = 0 - Math.random() * 300;
+  this.x = 0 - Math.random() * 200;
 }
 
+// Increase speed of enemies slightly.
 Enemy.prototype.increaseRate = function() {
   this.rate += Math.floor(Math.random() * 50);
-  //console.log("Rate increased to " + this.rate);
 }
 
 // Draw the enemy on the screen, required method for game
@@ -49,7 +51,10 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-//Increase number of enemies at end of succesful run.
+/* Increase number of enemies at end of succesful run.
+ * Note: this is not part of the Enemy class, as it does not run for every
+ * enemy - it is a generic game function.
+ */
 addAnEnemy = function() {
   /* Determine what row to put the new enemy on. This is determined
    * by finding how many enemies there are, and adding one to the next
@@ -57,14 +62,17 @@ addAnEnemy = function() {
    */
   var rows = 4;
   var count = allEnemies.length + 1;
+
   // Loop to top if count > rows available.
   if (count > rows) {
     count -= rows;
   }
+
   // Add the enemy to the allEnemies array
   var enemy = new Enemy(-150, (count * 83) - 21);
   allEnemies.push(enemy);
 }
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -82,20 +90,22 @@ Player.prototype.update = function() {
 
 // Reset player's position to start location
 Player.prototype.reset = function() {
-  /* Switch between player sprites if top row not reached
-   * or top row is reached without carrying the item.
+  /* Switch between player sprites if scoring row not reached
+   * or scoring row is reached without carrying the item.
    * Switching is based on a serach against the sprite name.
    * A ternary operator is used to alternate between images.
    */
   if (this.y > 0 || (this.y < 0 && this.carryItem == false)) {
     this.sprite = (this.sprite.search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
   }
+
   // If player is carrying an item, set carryItem to false and
   // modify sprite name to no longer display that item
   if (this.carryItem === true) {
     this.carryItem = false;
     this.sprite = this.sprite.replace('_w_' + book.name,'');
   }
+
   // Set player to start position
   this.x = 303;
   this.y = 404;
@@ -142,6 +152,7 @@ Player.prototype.handleInput = function(key) {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
+
 
 //Create item class for item(s) to be picked up by player
 var Item = function (name, x, y) {
