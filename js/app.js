@@ -1,5 +1,6 @@
-// Create "global" pause variable, initialize to off (false).
+// Create "global" variables
 var paused = false;
+var intro = true;
 
 // Toggle between paused and un-paused states by blocking updates.
 // This boolean is used in Enemy.update and Player.handleInput

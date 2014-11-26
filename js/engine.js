@@ -23,7 +23,6 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        intro = true,
         lastTime;
 
     canvas.width = 707;
@@ -343,5 +342,4 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
-    global.intro = intro;
 })(this);
