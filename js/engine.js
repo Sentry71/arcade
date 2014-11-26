@@ -81,7 +81,7 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-      if (intro === false) {
+      if (gameOn) {
         updateEntities(dt);
         checkCollisions();
         updateScoringRow();
@@ -169,6 +169,7 @@ var Engine = (function(global) {
       allEnemies = [];
       player.reset();
       book.hide();
+      gameOn = false;
     }
 
     /* This function initially draws the "game level", it will then call
@@ -232,7 +233,7 @@ var Engine = (function(global) {
       }
 
       //If showing intro, render intro entities. Otherwise, render game entities.
-      if (intro) {
+      if (!gameOn) {
         renderIntro();
       } else {
         renderEntities();
@@ -244,6 +245,9 @@ var Engine = (function(global) {
      * constructor to create items, as they are not player controlled.
      */
     function renderIntro() {
+      if(typeof allScorePositions !== 'undefined') {
+        renderScoringRow();
+      }
       bubbleRect(205,260,300,100,25,10,'#fff','#000');
       allActors.forEach(function(actor) {
         actor.render();
@@ -251,7 +255,7 @@ var Engine = (function(global) {
       displayStory();
     }
 
-    /**
+    /** Code below from http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html
     * Draws a rounded rectangle using the current state of the canvas.
     * @param {Number} x The top left x coordinate.
     * @param {Number} y The top left y coordinate.
@@ -287,9 +291,7 @@ var Engine = (function(global) {
      */
     function renderEntities() {
       // Render books on top row from successful placements by player
-      allScorePositions.forEach(function(pos) {
-        pos.render();
-      });
+      renderScoringRow();
 
       // Render item only if not picked up (visible = true)
       if(book.visible === true) {
@@ -304,6 +306,14 @@ var Engine = (function(global) {
       });
 
       player.render();
+    }
+
+    // Since this render is used in the game and in the gameOver screen,
+    // it was refactored out on its own.
+    function renderScoringRow () {
+      allScorePositions.forEach(function(pos) {
+        pos.render();
+      });
     }
 
     /* This function does nothing but it could have been a good place to
