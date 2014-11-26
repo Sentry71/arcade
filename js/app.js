@@ -1,5 +1,6 @@
-// Create "global" pause variable, initialize to off (false).
+// Create "global" variables
 var paused = false;
+var intro = true;
 
 // Toggle between paused and un-paused states by blocking updates.
 // This boolean is used in Enemy.update and Player.handleInput
@@ -207,7 +208,7 @@ Item.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Create item to hold information about where an item has been placed on the
+// Create item(s) to hold information about where an item has been placed on the
 // scoring row.
 var ScorePosition = function(name, x) {
   this.x = x;
@@ -223,6 +224,9 @@ ScorePosition.prototype.render = function() {
 // Initialize game asset variables. This is called on startup of the game,
 // or if the player presses R on the keyboard.
 function gameReset() {
+  // Turn off intro indicator (this should start the game).
+  intro = false;
+
   // Now instantiate your objects.
   // Place all enemy objects in an array called allEnemies
   allEnemies = [];
@@ -247,24 +251,103 @@ function gameReset() {
   player = new Player(303, 404);
 }
 
+
+// Create actors for intro/gameOver dialogs
+var Actor = function(name, x, y) {
+  this.sprite = 'images/' + name + '.png';
+  this.x = x;
+  this.y = y;
+  this.talking = false;
+}
+
+// Draw actor on game board. If this specific actor is talking, add the
+// indicator above their head, connecting to the chat bubble.
+Actor.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  if(this.talking) {
+    ctx.drawImage(Resources.get('images/bubble-tip.png'), this.x + 29, this.y + 38);
+  }
+}
+
+// Handle keyboard input during intro scene
+Actor.prototype.handleInput = function(key) {
+  switch(key) {
+    case 'spacebar':
+      if (storyIndex < storyText.length - 1){
+        storyIndex++;
+        speakerToggle();
+      } else {
+        gameReset();
+      }
+      break;
+  }
+}
+
+// Switch speaker on intro dialog
+function speakerToggle() {
+  allActors.forEach(function(actor) {
+    actor.talking = !actor.talking;
+  });
+}
+
+// Initialize intro characters, place in allActors array.
+// Start conversation with actor1.
+function initIntro() {
+  allActors= [];
+  var actor1 = new Actor('Miriam', 202, 321);
+  actor1.talking = true;
+  allActors.push(actor1);
+  var actor2 = new Actor('Mike', 404, 321);
+  allActors.push(actor2);
+}
+
+// Create array of text items to be spoken by actors. Set storyIndex
+// to keep track of item being spoken. Text will alternate between actors.
+var storyText = [
+  ['Hey Mike, ready for', 'tomorrow\'s start to the', 'nanodegree program?'],
+  ['I sure am, Miriam!', 'I have everything right here...'],
+  ['Awesome...'],
+  ['Uh oh.'],
+  ['What\'s wrong?'],
+  ['I can\'t find the course', 'materials!'],
+  ['We definitely need those.'],
+  ['I think they might have fallen', 'out of my pocket on my', 'way here.'],
+  ['Let\'s look around.']
+];
+var storyIndex = 0;
+
+function displayStory () {
+  ctx.font = '16pt Arial';  // TODO: change font
+  ctx.fillStyle = '#000';
+  for (var i=0; i < storyText[storyIndex].length; i++){
+    ctx.fillText(storyText[storyIndex][i],225,290 + i * 25);
+  }
+}
+
 // This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// handleInput() methods.
 document.addEventListener('keyup', function(e) {
-  var allowedKeys = {
-    37: 'left',
-    38: 'up',
-    39: 'right',
-    40: 'down',
-    65: 'left',      // A
-    68: 'right',     // D
-    83: 'down',      // S
-    80: 'pause',
-    82: 'restart',
-    87: 'up'         // W
-  };
+  if (intro) {
+    var allowedKeys = {
+      32: 'spacebar'
+    }
+    allActors[0].handleInput(allowedKeys[e.keyCode]);
+  } else {
+    var allowedKeys = {
+      37: 'left',
+      38: 'up',
+      39: 'right',
+      40: 'down',
+      65: 'left',      // A
+      68: 'right',     // D
+      83: 'down',      // S
+      80: 'pause',
+      82: 'restart',
+      87: 'up'         // W
+    };
+    player.handleInput(allowedKeys[e.keyCode]);
+  }
 
   //Write keyCode and "definition" to console for debugging
-  //console.log(e.keyCode, allowedKeys[e.keyCode]);
-
-  player.handleInput(allowedKeys[e.keyCode]);
+  console.log(e.keyCode, allowedKeys[e.keyCode]);
 });
