@@ -232,7 +232,7 @@ var Engine = (function(global) {
         }
       }
 
-      //If showing intro, render those entities. Otherwise, render game.
+      //If showing intro, render intro entities. Otherwise, render game entities.
       if (intro) {
         renderIntro();
       } else {
@@ -245,11 +245,11 @@ var Engine = (function(global) {
      * constructor to create items, as they are not player controlled.
      */
     function renderIntro() {
-      bubbleRect(205,200,300,160,25,10,'#fff','#000');
+      bubbleRect(205,260,300,100,25,10,'#fff','#000');
       allActors.forEach(function(actor) {
         actor.render();
       });
-      // TODO: add text to display
+      displayStory();
     }
 
     /**
@@ -343,4 +343,5 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.intro = intro;
 })(this);

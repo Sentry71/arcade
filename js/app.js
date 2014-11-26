@@ -268,8 +268,13 @@ Actor.prototype.render = function() {
 Actor.prototype.handleInput = function(key) {
   switch(key) {
     case 'spacebar':
-      this.speakerToggle();
-      //TODO: toggle text
+      if (storyIndex < storyText.length - 1){
+        storyIndex++;
+        speakerToggle();
+      } else {
+        intro = false;
+        gameReset();
+      }
       break;
   }
 }
@@ -292,8 +297,28 @@ function initIntro() {
   allActors.push(actor2);
 }
 
-// Create array of text items to be spoken by actors.
+// Create array of text items to be spoken by actors. Set storyIndex
+// to keep track of item being spoken. Text will alternate between actors.
+var storyText = [
+  ['Hey Mike, ready for', 'tomorrow\'s start to the', 'nanodegree program?'],
+  ['I sure am, Miriam!', 'I have everything right here...'],
+  ['Awesome...'],
+  ['Uh oh.'],
+  ['What\'s wrong?'],
+  ['I can\'t find the course', 'materials!'],
+  ['We definitely need those.'],
+  ['I think they might have fallen', 'out of my pocket on my', 'way here.'],
+  ['Let\'s look around.']
+];
+var storyIndex = 0;
 
+function displayStory () {
+  ctx.font = '16pt Arial';  // TODO: change font
+  ctx.fillStyle = '#000';
+  for (var i=0; i < storyText[storyIndex].length; i++){
+    ctx.fillText(storyText[storyIndex][i],225,290 + i * 25);
+  }
+}
 
 // This listens for key presses and sends the keys to your
 // handleInput() methods.
@@ -302,7 +327,7 @@ document.addEventListener('keyup', function(e) {
     var allowedKeys = {
       32: 'spacebar'
     }
-    actor.handleInput(allowedKeys[e.keyCode]);
+    allActors[0].handleInput(allowedKeys[e.keyCode]);
   } else {
     var allowedKeys = {
       37: 'left',
