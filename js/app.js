@@ -207,7 +207,7 @@ Item.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Create item to hold information about where an item has been placed on the
+// Create item(s) to hold information about where an item has been placed on the
 // scoring row.
 var ScorePosition = function(name, x) {
   this.x = x;
@@ -223,6 +223,9 @@ ScorePosition.prototype.render = function() {
 // Initialize game asset variables. This is called on startup of the game,
 // or if the player presses R on the keyboard.
 function gameReset() {
+  // Turn off intro indicator (this should start the game).
+  intro = false;
+
   // Now instantiate your objects.
   // Place all enemy objects in an array called allEnemies
   allEnemies = [];
@@ -256,7 +259,8 @@ var Actor = function(name, x, y) {
   this.talking = false;
 }
 
-// Draw actor on game board
+// Draw actor on game board. If this specific actor is talking, add the
+// indicator above their head, connecting to the chat bubble.
 Actor.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   if(this.talking) {
@@ -272,7 +276,6 @@ Actor.prototype.handleInput = function(key) {
         storyIndex++;
         speakerToggle();
       } else {
-        intro = false;
         gameReset();
       }
       break;
@@ -345,5 +348,5 @@ document.addEventListener('keyup', function(e) {
   }
 
   //Write keyCode and "definition" to console for debugging
-  //console.log(e.keyCode, allowedKeys[e.keyCode]);
+  console.log(e.keyCode, allowedKeys[e.keyCode]);
 });
