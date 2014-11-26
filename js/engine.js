@@ -245,12 +245,42 @@ var Engine = (function(global) {
      * constructor to create items, as they are not player controlled.
      */
     function renderIntro() {
+      bubbleRect(205,200,300,160,25,10,'#fff','#000');
       allActors.forEach(function(actor) {
         actor.render();
       });
-      //bubble.render();
+      // TODO: add text to display
     }
 
+    /**
+    * Draws a rounded rectangle using the current state of the canvas.
+    * @param {Number} x The top left x coordinate.
+    * @param {Number} y The top left y coordinate.
+    * @param {Number} width The width of the rectangle.
+    * @param {Number} height The height of the rectangle.
+    * @param {Number} radius The corner radius.
+    * @param {Number} lineWidth The width of the stroke.
+    * @param {String} fill Whhat color to use on the fill.
+    * @param {String} stroke What color to use on the stroke.
+    */
+    function bubbleRect(x, y, width, height, radius, lineWidth, fill, stroke) {
+      ctx.lineWidth = lineWidth;
+      ctx.fillStyle = fill;
+      ctx.strokeStyle = stroke;
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
+    }
 
     /* This function is called by the render function and is called on each game
      * tick. It's purpose is to then call the render functions you have defined
@@ -303,7 +333,8 @@ var Engine = (function(global) {
       'images/roof-se.png',
       'images/roof-sw.png',
       'images/blank.png',
-      'images/cloud.png'
+      'images/cloud.png',
+      'images/bubble-tip.png'
     ]);
     Resources.onReady(init);
 

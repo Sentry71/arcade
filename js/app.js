@@ -256,10 +256,13 @@ var Actor = function(name, x, y) {
   this.talking = false;
 }
 
+// Handle keyboard input
 // Draw actor on game board
 Actor.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  // TODO: add bubble extension to point to talking actor
+  if(this.talking) {
+    ctx.drawImage(Resources.get('images/bubble-tip.png'), this.x + 29, this.y + 38);
+  }
 }
 
 // Initialize intro characters, place in allActors array.
@@ -291,6 +294,9 @@ document.addEventListener('keyup', function(e) {
 
   //Write keyCode and "definition" to console for debugging
   //console.log(e.keyCode, allowedKeys[e.keyCode]);
-
-  player.handleInput(allowedKeys[e.keyCode]);
+  if (intro) {
+    actor.handleInput(allowedKeys[e.keyCode]);
+  } else {
+    player.handleInput(allowedKeys[e.keyCode]);
+  }
 });
