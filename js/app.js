@@ -1,6 +1,6 @@
 // Create "global" variables
 var paused = false;
-var intro = true;
+var gameOn = false;
 
 // Toggle between paused and un-paused states by blocking updates.
 // This boolean is used in Enemy.update and Player.handleInput
@@ -224,8 +224,8 @@ ScorePosition.prototype.render = function() {
 // Initialize game asset variables. This is called on startup of the game,
 // or if the player presses R on the keyboard.
 function gameReset() {
-  // Turn off intro indicator (this should start the game).
-  intro = false;
+  // Turn on game indicator (this should start the game).
+  gameOn = true;
 
   // Now instantiate your objects.
   // Place all enemy objects in an array called allEnemies
@@ -273,10 +273,11 @@ Actor.prototype.render = function() {
 Actor.prototype.handleInput = function(key) {
   switch(key) {
     case 'spacebar':
-      if (storyIndex < storyText.length - 1){
+      if (storyIndex < 8){
         storyIndex++;
         speakerToggle();
       } else {
+        storyIndex = 9;
         gameReset();
       }
       break;
@@ -312,7 +313,8 @@ var storyText = [
   ['I can\'t find the course', 'materials!'],
   ['We definitely need those.'],
   ['I think they might have fallen', 'out of my pocket on my', 'way here.'],
-  ['Let\'s look around.']
+  ['Let\'s look around.'],
+  ['All the course materials','were found.','Thanks for your help!']
 ];
 var storyIndex = 0;
 
@@ -322,12 +324,23 @@ function displayStory () {
   for (var i=0; i < storyText[storyIndex].length; i++){
     ctx.fillText(storyText[storyIndex][i],225,290 + i * 25);
   }
+  ctx.strokeStyle = '#fff';
+  var helpText = '';
+  if (storyIndex < 9){
+    helpText = 'Press Spacebar to continue';
+  } else {
+    helpText = 'Press Spacebar to play again';
+    allActors[1].talking = true;
+  }
+  ctx.lineWidth = 5;
+  ctx.strokeText(helpText,225,550);
+  ctx.fillText(helpText,225,550);
 }
 
 // This listens for key presses and sends the keys to your
 // handleInput() methods.
 document.addEventListener('keyup', function(e) {
-  if (intro) {
+  if (!gameOn) {
     var allowedKeys = {
       32: 'spacebar'
     }
@@ -349,5 +362,5 @@ document.addEventListener('keyup', function(e) {
   }
 
   //Write keyCode and "definition" to console for debugging
-  console.log(e.keyCode, allowedKeys[e.keyCode]);
+  //console.log(e.keyCode, allowedKeys[e.keyCode]);
 });
