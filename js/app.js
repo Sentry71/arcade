@@ -256,7 +256,6 @@ var Actor = function(name, x, y) {
   this.talking = false;
 }
 
-// Handle keyboard input
 // Draw actor on game board
 Actor.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -265,38 +264,61 @@ Actor.prototype.render = function() {
   }
 }
 
+// Handle keyboard input during intro scene
+Actor.prototype.handleInput = function(key) {
+  switch(key) {
+    case 'spacebar':
+      this.speakerToggle();
+      //TODO: toggle text
+      break;
+  }
+}
+
+// Switch speaker on intro dialog
+function speakerToggle() {
+  allActors.forEach(function(actor) {
+    actor.talking = !actor.talking;
+  });
+}
+
 // Initialize intro characters, place in allActors array.
+// Start conversation with actor1.
 function initIntro() {
   allActors= [];
   var actor1 = new Actor('Miriam', 202, 321);
+  actor1.talking = true;
   allActors.push(actor1);
   var actor2 = new Actor('Mike', 404, 321);
   allActors.push(actor2);
 }
 
+// Create array of text items to be spoken by actors.
+
 
 // This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// handleInput() methods.
 document.addEventListener('keyup', function(e) {
-  var allowedKeys = {
-    32: 'spacebar',
-    37: 'left',
-    38: 'up',
-    39: 'right',
-    40: 'down',
-    65: 'left',      // A
-    68: 'right',     // D
-    83: 'down',      // S
-    80: 'pause',
-    82: 'restart',
-    87: 'up'         // W
-  };
+  if (intro) {
+    var allowedKeys = {
+      32: 'spacebar'
+    }
+    actor.handleInput(allowedKeys[e.keyCode]);
+  } else {
+    var allowedKeys = {
+      37: 'left',
+      38: 'up',
+      39: 'right',
+      40: 'down',
+      65: 'left',      // A
+      68: 'right',     // D
+      83: 'down',      // S
+      80: 'pause',
+      82: 'restart',
+      87: 'up'         // W
+    };
+    player.handleInput(allowedKeys[e.keyCode]);
+  }
 
   //Write keyCode and "definition" to console for debugging
   //console.log(e.keyCode, allowedKeys[e.keyCode]);
-  if (intro) {
-    actor.handleInput(allowedKeys[e.keyCode]);
-  } else {
-    player.handleInput(allowedKeys[e.keyCode]);
-  }
 });

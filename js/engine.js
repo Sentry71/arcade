@@ -260,7 +260,7 @@ var Engine = (function(global) {
     * @param {Number} height The height of the rectangle.
     * @param {Number} radius The corner radius.
     * @param {Number} lineWidth The width of the stroke.
-    * @param {String} fill Whhat color to use on the fill.
+    * @param {String} fill What color to use on the fill.
     * @param {String} stroke What color to use on the stroke.
     */
     function bubbleRect(x, y, width, height, radius, lineWidth, fill, stroke) {
