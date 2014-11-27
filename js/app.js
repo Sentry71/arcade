@@ -333,8 +333,8 @@ function displayStory () {
     allActors[1].talking = true;
   }
   ctx.lineWidth = 5;
-  ctx.strokeText(helpText,225,550);
-  ctx.fillText(helpText,225,550);
+  ctx.strokeText(helpText,225,515);
+  ctx.fillText(helpText,225,515);
 }
 
 // This listens for key presses and sends the keys to your
@@ -360,7 +360,6 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
   }
-
   //Write keyCode and "definition" to console for debugging
   //console.log(e.keyCode, allowedKeys[e.keyCode]);
 });

@@ -241,8 +241,8 @@ var Engine = (function(global) {
     }
 
 
-    /* This function is called to draw the intro scene. It uses the Actor
-     * constructor to create items, as they are not player controlled.
+    /* This function is called to draw the intro/gameOver scene. It uses the
+     * Actor constructor to create items, as they are not player controlled.
      */
     function renderIntro() {
       if(typeof allScorePositions !== 'undefined') {
