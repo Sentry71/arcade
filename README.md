@@ -1,4 +1,4 @@
-frontend-nanodegree-arcade-game
+FEND Project 3 - Arcade Clone, Udacity Style
 ===============================
 
 Game link: http://sentry71.github.io/arcade/
@@ -6,7 +6,6 @@ Game link: http://sentry71.github.io/arcade/
 The Story
 ---
 The program leads for Udacity's Front End Web Developer nanodegree, Miriam Swords Kalk and Michael Wales, are having a conversation the day before the nanodegree is set to open. It seems, however, that there are a few things missing. Miriam and Mike need YOUR help to collect the missing course materials and get the nanodegree program off to a great start. Can you help?
-
 ![Miriam](images/Miriam.png)  ![Mike](images/Mike.png)
 
 Game Play
