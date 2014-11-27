@@ -241,14 +241,14 @@ var Engine = (function(global) {
     }
 
 
-    /* This function is called to draw the intro scene. It uses the Actor
-     * constructor to create items, as they are not player controlled.
+    /* This function is called to draw the intro/gameOver scene. It uses the
+     * Actor constructor to create items, as they are not player controlled.
      */
     function renderIntro() {
       if(typeof allScorePositions !== 'undefined') {
         renderScoringRow();
       }
-      bubbleRect(205,260,300,100,25,10,'#fff','#000');
+      bubbleRect(205,177,300,100,25,10,'#fff','#000');
       allActors.forEach(function(actor) {
         actor.render();
       });
