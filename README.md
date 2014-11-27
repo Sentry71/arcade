@@ -1,10 +1,6 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
-
-for self-checking their submission.
-
 Game link: http://sentry71.github.io/arcade/
 
 The Story
@@ -26,10 +22,11 @@ Game Controls
 ---
 During the intro game scene:
 - Pressing **Spacebar** will advance the dialog
+
 During the game:
 - Movement is controlled by the **arrow keys** or **WASD**.
 - Pause the game by pressing **P**.
 - Restart the game by pressing **R**.
+
 During the end game scene:
 - Pressing **Spacebar** will restart the game.
-- 
