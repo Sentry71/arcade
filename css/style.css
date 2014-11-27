@@ -4,8 +4,12 @@ body {
   font-family: 'Press Start 2P', Arial, sans-serif;
 }
 
-/* following code from
- *http://techsperia.blogspot.com/2013/11/keyboard-key-effect-css-blogger.html
+.hidden {
+  display: none;
+}
+
+/* CSS code for keycap text from
+ * http://techsperia.blogspot.com/2013/11/keyboard-key-effect-css-blogger.html
  */
 kbd{
   border:1px solid gray;

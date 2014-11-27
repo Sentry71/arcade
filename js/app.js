@@ -278,6 +278,7 @@ Actor.prototype.handleInput = function(key) {
         speakerToggle();
       } else {
         storyIndex = 9;
+        document.getElementById('instructions').className = '';
         gameReset();
       }
       break;
@@ -305,7 +306,7 @@ function initIntro() {
 // Create array of text items to be spoken by actors. Set storyIndex
 // to keep track of item being spoken. Text will alternate between actors.
 var storyText = [
-  ['Hey Mike, ready for', 'tomorrow\'s start to the', 'nanodegree program?'],
+  ['Hi Mike! Are you ready for', 'tomorrow\'s start to the', 'nanodegree program?'],
   ['I sure am, Miriam!', 'I have everything right here...'],
   ['Awesome...'],
   ['Uh oh.'],
