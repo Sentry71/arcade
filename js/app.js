@@ -318,24 +318,6 @@ var storyText = [
 ];
 var storyIndex = 0;
 
-function displayStory () {
-  ctx.font = '16pt Arial';  // TODO: change font
-  ctx.fillStyle = '#000';
-  for (var i=0; i < storyText[storyIndex].length; i++){
-    ctx.fillText(storyText[storyIndex][i],225,207 + i * 25);
-  }
-  ctx.strokeStyle = '#fff';
-  var helpText = '';
-  if (storyIndex < 9){
-    helpText = 'Press Spacebar to continue';
-  } else {
-    helpText = 'Press Spacebar to play again';
-    allActors[1].talking = true;
-  }
-  ctx.lineWidth = 5;
-  ctx.strokeText(helpText,225,515);
-  ctx.fillText(helpText,225,515);
-}
 
 // This listens for key presses and sends the keys to your
 // handleInput() methods.
