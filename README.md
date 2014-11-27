@@ -3,6 +3,8 @@ FEND Project 3 - Arcade Clone, Udacity Style
 
 Game link: http://sentry71.github.io/arcade/
 
+Simply click on the link above to start playing!
+
 The Story
 ---
 The program leads for Udacity's Front End Web Developer nanodegree, Miriam Swords Kalk and Michael Wales, are having a conversation the day before the nanodegree is set to open. It seems, however, that there are a few things missing. Miriam and Mike need YOUR help to collect the missing course materials and get the nanodegree program off to a great start. Can you help?
@@ -15,7 +17,7 @@ Game Play
 - Take the books to the top of the screen, and drop them into an open tile without a book.
 - If the player character is hit, the character will switch and start again. (For example, if Mike is hit, Miriam will be next for the player to control.)
 - If a character is carrying a book when he/she is hit, the book will be dropped where the collision occurred.
-- When all five books are on the top of the screen, the player wins!
+- When all five books are at the top of the screen, the player wins!
 
 Game Controls
 ---
