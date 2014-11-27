@@ -295,10 +295,10 @@ function speakerToggle() {
 // Start conversation with actor1.
 function initIntro() {
   allActors= [];
-  var actor1 = new Actor('Miriam', 202, 321);
+  var actor1 = new Actor('Miriam', 202, 238);
   actor1.talking = true;
   allActors.push(actor1);
-  var actor2 = new Actor('Mike', 404, 321);
+  var actor2 = new Actor('Mike', 404, 238);
   allActors.push(actor2);
 }
 
@@ -322,7 +322,7 @@ function displayStory () {
   ctx.font = '16pt Arial';  // TODO: change font
   ctx.fillStyle = '#000';
   for (var i=0; i < storyText[storyIndex].length; i++){
-    ctx.fillText(storyText[storyIndex][i],225,290 + i * 25);
+    ctx.fillText(storyText[storyIndex][i],225,207 + i * 25);
   }
   ctx.strokeStyle = '#fff';
   var helpText = '';

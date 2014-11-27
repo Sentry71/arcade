@@ -248,7 +248,7 @@ var Engine = (function(global) {
       if(typeof allScorePositions !== 'undefined') {
         renderScoringRow();
       }
-      bubbleRect(205,260,300,100,25,10,'#fff','#000');
+      bubbleRect(205,177,300,100,25,10,'#fff','#000');
       allActors.forEach(function(actor) {
         actor.render();
       });
