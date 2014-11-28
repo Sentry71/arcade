@@ -65,7 +65,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-      //reset();
       initIntro();
       lastTime = Date.now();
       main();
@@ -99,7 +98,6 @@ var Engine = (function(global) {
       allEnemies.forEach(function(enemy) {
         enemy.update(dt);
       });
-      player.update();
     }
 
     // Check collisions
@@ -164,7 +162,8 @@ var Engine = (function(global) {
       }
     }
 
-
+    // When game ends, clear the allEnemies array, hide the book,
+    // and set the gameOn to false.
     function gameOver() {
       allEnemies = [];
       player.reset();
@@ -255,6 +254,11 @@ var Engine = (function(global) {
       renderStory();
     }
 
+    /* This function takes the information from the storyText array in app.js,
+     * and uses that data to render the text in the story bubble above the
+     * actors. A helper text is also rendered at the bottom of the play area,
+     * to indicate Spacebar functionality.
+     */
     function renderStory () {
       ctx.font = '16pt Arial';  // TODO: change font
       ctx.fillStyle = '#000';
@@ -333,14 +337,6 @@ var Engine = (function(global) {
       allScorePositions.forEach(function(pos) {
         pos.render();
       });
-    }
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-      gameReset();
     }
 
     /* Go ahead and load all of the images we know we're going to need to

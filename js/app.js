@@ -76,17 +76,11 @@ addAnEnemy = function() {
 
 
 // Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 var Player = function(x,y) {
   this.sprite = 'images/Miriam.png';
   this.x = x;
   this.y = y;
   this.carryItem = false;
-}
-
-Player.prototype.update = function() {
-  // Unused at this time.
 }
 
 // Reset player's position to start location
@@ -269,7 +263,8 @@ Actor.prototype.render = function() {
   }
 }
 
-// Handle keyboard input during intro scene
+// Handle keyboard input during intro scene. When all text for intro
+// is complete, show gameplay instructions below game board and start game.
 Actor.prototype.handleInput = function(key) {
   switch(key) {
     case 'spacebar':
