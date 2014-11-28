@@ -65,7 +65,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-      //reset();
       initIntro();
       lastTime = Date.now();
       main();
@@ -99,7 +98,6 @@ var Engine = (function(global) {
       allEnemies.forEach(function(enemy) {
         enemy.update(dt);
       });
-      player.update();
     }
 
     // Check collisions
@@ -154,7 +152,7 @@ var Engine = (function(global) {
             book.reset();
             allEnemies.forEach(function(enemy) {
               enemy.increaseRate();
-              enemy.reset();
+              //enemy.reset();
             });
           }
         }else{
@@ -164,7 +162,8 @@ var Engine = (function(global) {
       }
     }
 
-
+    // When game ends, clear the allEnemies array, hide the book,
+    // and set the gameOn to false.
     function gameOver() {
       allEnemies = [];
       player.reset();
@@ -252,7 +251,31 @@ var Engine = (function(global) {
       allActors.forEach(function(actor) {
         actor.render();
       });
-      displayStory();
+      renderStory();
+    }
+
+    /* This function takes the information from the storyText array in app.js,
+     * and uses that data to render the text in the story bubble above the
+     * actors. A helper text is also rendered at the bottom of the play area,
+     * to indicate Spacebar functionality.
+     */
+    function renderStory () {
+      ctx.font = '16pt Arial';  // TODO: change font
+      ctx.fillStyle = '#000';
+      for (var i=0; i < storyText[storyIndex].length; i++){
+        ctx.fillText(storyText[storyIndex][i],225,207 + i * 25);
+      }
+      ctx.strokeStyle = '#fff';
+      var helpText = '';
+      if (storyIndex < 9){
+        helpText = 'Press Spacebar to continue';
+      } else {
+        helpText = 'Press Spacebar to play again';
+        allActors[1].talking = true;
+      }
+      ctx.lineWidth = 5;
+      ctx.strokeText(helpText,225,515);
+      ctx.fillText(helpText,225,515);
     }
 
     /** Code below from http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html
@@ -314,14 +337,6 @@ var Engine = (function(global) {
       allScorePositions.forEach(function(pos) {
         pos.render();
       });
-    }
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-      gameReset();
     }
 
     /* Go ahead and load all of the images we know we're going to need to

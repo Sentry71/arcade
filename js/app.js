@@ -76,17 +76,11 @@ addAnEnemy = function() {
 
 
 // Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 var Player = function(x,y) {
   this.sprite = 'images/Miriam.png';
   this.x = x;
   this.y = y;
   this.carryItem = false;
-}
-
-Player.prototype.update = function() {
-  // Unused at this time.
 }
 
 // Reset player's position to start location
@@ -269,7 +263,8 @@ Actor.prototype.render = function() {
   }
 }
 
-// Handle keyboard input during intro scene
+// Handle keyboard input during intro scene. When all text for intro
+// is complete, show gameplay instructions below game board and start game.
 Actor.prototype.handleInput = function(key) {
   switch(key) {
     case 'spacebar':
@@ -278,6 +273,7 @@ Actor.prototype.handleInput = function(key) {
         speakerToggle();
       } else {
         storyIndex = 9;
+        document.getElementById('instructions').className = '';
         gameReset();
       }
       break;
@@ -305,7 +301,7 @@ function initIntro() {
 // Create array of text items to be spoken by actors. Set storyIndex
 // to keep track of item being spoken. Text will alternate between actors.
 var storyText = [
-  ['Hey Mike, ready for', 'tomorrow\'s start to the', 'nanodegree program?'],
+  ['Hi Mike! Are you ready for', 'tomorrow\'s start to the', 'nanodegree program?'],
   ['I sure am, Miriam!', 'I have everything right here...'],
   ['Awesome...'],
   ['Uh oh.'],
@@ -318,24 +314,6 @@ var storyText = [
 ];
 var storyIndex = 0;
 
-function displayStory () {
-  ctx.font = '16pt Arial';  // TODO: change font
-  ctx.fillStyle = '#000';
-  for (var i=0; i < storyText[storyIndex].length; i++){
-    ctx.fillText(storyText[storyIndex][i],225,207 + i * 25);
-  }
-  ctx.strokeStyle = '#fff';
-  var helpText = '';
-  if (storyIndex < 9){
-    helpText = 'Press Spacebar to continue';
-  } else {
-    helpText = 'Press Spacebar to play again';
-    allActors[1].talking = true;
-  }
-  ctx.lineWidth = 5;
-  ctx.strokeText(helpText,225,515);
-  ctx.fillText(helpText,225,515);
-}
 
 // This listens for key presses and sends the keys to your
 // handleInput() methods.
