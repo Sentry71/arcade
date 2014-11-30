@@ -37,7 +37,7 @@ Enemy.prototype.update = function(dt) {
     }
 }
 
-// Randomize start location of enemies when level completed
+// Randomize start location of enemies when game completed
 Enemy.prototype.reset = function() {
   this.x = 0 - Math.random() * 200;
 }
@@ -69,8 +69,8 @@ addAnEnemy = function() {
     count -= rows;
   }
 
-  // Add the enemy to the allEnemies array
-  var enemy = new Enemy(-150, (count * 83) - 21);
+  // Add the new enemy to the allEnemies array
+  var enemy = new Enemy(-100, (count * 83) - 21);
   allEnemies.push(enemy);
 }
 
@@ -90,13 +90,13 @@ Player.prototype.reset = function() {
    * Switching is based on a serach against the sprite name.
    * A ternary operator is used to alternate between images.
    */
-  if (this.y > 0 || (this.y < 0 && this.carryItem == false)) {
+  if (this.y > 0 || (this.y < 0 && !this.carryItem)) {
     this.sprite = (this.sprite.search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
   }
 
   // If player is carrying an item, set carryItem to false and
   // modify sprite name to no longer display that item
-  if (this.carryItem === true) {
+  if (this.carryItem) {
     this.carryItem = false;
     this.sprite = this.sprite.replace('_w_' + book.name,'');
   }
@@ -107,10 +107,10 @@ Player.prototype.reset = function() {
 }
 
 // Takes input and does something with it
-// Parameter: key, the keyCode from the key pressed
+// @param {String} key, the keyCode from the key pressed
 // IF statements verify movement will not allow the
 // player outside the canvas boundaries before the
-// movement is rendered.
+// movement is calculated.
 
 Player.prototype.handleInput = function(key) {
   switch(key) {
@@ -141,9 +141,6 @@ Player.prototype.handleInput = function(key) {
       gameReset();
       break;
   }
-
-  //Log location to console for debugging
-  //console.log("Location: x " + this.x + " : y " + this.y);
 }
 
 //Draw player on the screen
@@ -175,6 +172,7 @@ Item.prototype.pickup = function() {
   this.x = -101;
   this.y = -101;
 }
+
 
 Item.prototype.drop = function() {
   this.visible = true;
@@ -317,7 +315,7 @@ var storyIndex = 0;
 
 // This listens for key presses and sends the keys to your
 // handleInput() methods.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keydown', function(e) {
   if (!gameOn) {
     var allowedKeys = {
       32: 'spacebar'
@@ -338,6 +336,5 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
   }
-  //Write keyCode and "definition" to console for debugging
-  //console.log(e.keyCode, allowedKeys[e.keyCode]);
+  e.preventDefault();
 });

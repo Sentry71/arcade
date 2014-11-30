@@ -4,6 +4,10 @@ body {
   font-family: 'Press Start 2P', Arial, sans-serif;
 }
 
+h3 {
+  text-decoration: underline;
+}
+
 .hidden {
   display: none;
 }
@@ -11,7 +15,7 @@ body {
 /* CSS code for keycap text from
  * http://techsperia.blogspot.com/2013/11/keyboard-key-effect-css-blogger.html
  */
-kbd{
+kbd {
   border:1px solid gray;
   padding:1px 5px;
   margin:0 5px;
@@ -29,5 +33,5 @@ kbd{
   background:-o-linear-gradient(left, #ffffff 0%, #e2e2e2 25%);
   background:-ms-linear-gradient(left, #ffffff 0%, #e2e2e2 25%);
   background:linear-gradient(left, #ffffff 0%, #e2e2e2 25%);
-  filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e2e2e2', GradientType=1 )
+  filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e2e2e2', GradientType=1 );
 }

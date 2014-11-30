@@ -111,7 +111,7 @@ var Engine = (function(global) {
         if(player.y - enemy.y == 10) {
           if(player.x < enemy.x + 75 && player.x + 75 > enemy.x ){
             // If the player is carrying an item, drop it.
-            if (player.carryItem === true) {
+            if (player.carryItem) {
               book.drop();
             }
             player.reset();
@@ -138,7 +138,7 @@ var Engine = (function(global) {
           }
         });
         // If position is open, add book.
-        if(openSlot === true && player.carryItem == true) {
+        if(openSlot && player.carryItem) {
           var score = new ScorePosition('book',player.x);
           allScorePositions.push(score);
           // If all positions filled, end game.
@@ -163,10 +163,9 @@ var Engine = (function(global) {
     }
 
     // When game ends, clear the allEnemies array, hide the book,
-    // and set the gameOn to false.
+    // and disable the gameOn indicator.
     function gameOver() {
       allEnemies = [];
-      player.reset();
       book.hide();
       gameOn = false;
     }
@@ -316,8 +315,8 @@ var Engine = (function(global) {
       // Render books on top row from successful placements by player
       renderScoringRow();
 
-      // Render item only if not picked up (visible = true)
-      if(book.visible === true) {
+      // Render item only if not picked up (book.visible = true)
+      if(book.visible) {
         book.render();
       }
 
