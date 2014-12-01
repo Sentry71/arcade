@@ -2,16 +2,6 @@
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
  * render methods on your player and enemy objects (defined in your app.js).
- *
- * A game engine works by drawing the entire game screen over and over, kind of
- * like a flipbook you may have created as a kid. When your player moves across
- * the screen, it may look like just that image/character is moving or being
- * drawn but that is not the case. What's really happening is the entire "scene"
- * is being drawn over and over, presenting the illusion of animation.
- *
- * This engine is available globally via the Engine variable and it also makes
- * the canvas' context (ctx) object globally available to make writing app.js
- * a little simpler to work with.
  */
 
 var Engine = (function(global) {
@@ -42,7 +32,6 @@ var Engine = (function(global) {
       var now = Date.now(),
           dt = (now - lastTime) / 1000.0;
 
-
       /* Call our update/render functions, pass along the time delta to
        * our update function since it may be used for smooth animation.
        */
@@ -65,7 +54,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-      initIntro();
+      game.initIntro();
       lastTime = Date.now();
       main();
     }
@@ -80,7 +69,7 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-      if (gameOn) {
+      if (game.gameOn) {
         updateEntities(dt);
         checkCollisions();
         updateScoringRow();
@@ -146,7 +135,7 @@ var Engine = (function(global) {
             gameOver();
           } else {
             // Add another bug to the array.
-            addAnEnemy();
+            game.addAnEnemy();
             // Reset entities for next round.
             player.reset();
             book.reset();
@@ -167,7 +156,7 @@ var Engine = (function(global) {
     function gameOver() {
       allEnemies = [];
       book.hide();
-      gameOn = false;
+      game.gameOn = false;
     }
 
     /* This function initially draws the "game level", it will then call
@@ -231,7 +220,7 @@ var Engine = (function(global) {
       }
 
       //If showing intro, render intro entities. Otherwise, render game entities.
-      if (!gameOn) {
+      if (!game.gameOn) {
         renderIntro();
       } else {
         renderEntities();
@@ -259,14 +248,14 @@ var Engine = (function(global) {
      * to indicate Spacebar functionality.
      */
     function renderStory () {
-      ctx.font = '16pt Arial';  // TODO: change font
+      ctx.font = '16pt Arial';
       ctx.fillStyle = '#000';
-      for (var i=0; i < storyText[storyIndex].length; i++){
-        ctx.fillText(storyText[storyIndex][i],225,207 + i * 25);
+      for (var i=0; i < game.storyText[game.storyIndex].length; i++){
+        ctx.fillText(game.storyText[game.storyIndex][i],225,207 + i * 25);
       }
       ctx.strokeStyle = '#fff';
       var helpText = '';
-      if (storyIndex < 9){
+      if (game.storyIndex < 9){
         helpText = 'Press Spacebar to continue';
       } else {
         helpText = 'Press Spacebar to play again';
@@ -356,7 +345,6 @@ var Engine = (function(global) {
       'images/roof-se.png',
       'images/roof-sw.png',
       'images/blank.png',
-      'images/cloud.png',
       'images/bubble-tip.png'
     ]);
     Resources.onReady(init);

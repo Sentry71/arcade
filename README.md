@@ -13,8 +13,8 @@ The program leads for Udacity's Front End Web Developer nanodegree, Miriam Sword
 
 Game Play
 ---
-- Collect the books on the game board, while avoiding the bugs that are running across the screen.
-- Take the books to the top of the screen, and drop them into an open tile without a book. The books can be placed in any order.
+- Pick up the book on the game board, while avoiding the bugs that are running across the screen.
+- Take the book to the top of the game board, and drop it onto an open tile by moving onto that tile. Books can be placed in any order.
 - If the player character is hit, the character will alternate and gameplay will start again. (For example, if Mike is hit, Miriam will be next for the player to control.)
 - If a character is carrying a book when he/she is hit, the book will be dropped where the collision occurred.
 - When all five books are at the top of the screen, the player wins!
@@ -25,7 +25,7 @@ During the intro game scene:
 - Pressing **Spacebar** will advance the dialog
 
 During the game:
-- Movement is controlled by the **arrow keys** or **WASD**.
+- Movement is controlled by the **arrow keys**. Alternately, for the hardcore online gamers, directional movement can be controlled using **WASD**.
 - Pause the game by pressing **P**.
 - Restart the game by pressing **R**.
 
