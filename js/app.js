@@ -30,9 +30,9 @@ Game.prototype.togglePause = function() {
 // Increase number of enemies at end of succesful run
 Game.prototype.addAnEnemy = function() {
   /* Determine what row to put the new enemy on. This is determined
-  * by finding how many enemies there are, and adding one to the next
-  * stone row. When all rows are filled, start again at the first stone row.
-  */
+   * by finding how many enemies there are, and adding one to the next
+   * stone row. When all rows are filled, start again at the first stone row.
+   */
   var rows = 4;
   var count = allEnemies.length + 1;
 
@@ -94,16 +94,9 @@ Game.prototype.initIntro = function() {
   allActors.push(actor2);
 }
 
-//Initialize game (implicity global)
-game = new Game();
 
 // Enemies our player must avoid
 var Enemy = function(x, y) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
@@ -111,7 +104,7 @@ var Enemy = function(x, y) {
 }
 
 // Update the enemy's position, required method for game
-// @param {number} dt, a time delta between ticks
+// @param {number} dt A time delta between ticks.
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -316,6 +309,8 @@ Actor.prototype.handleInput = function(key) {
   }
 }
 
+//Initialize game (implicity global)
+game = new Game();
 
 // This listens for key presses and sends the keys to your
 // handleInput() methods.

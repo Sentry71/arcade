@@ -12,7 +12,7 @@ h3 {
   display: none;
 }
 
-/* CSS code for keycap text from
+/* CSS code for keyboard key text from
  * http://techsperia.blogspot.com/2013/11/keyboard-key-effect-css-blogger.html
  */
 kbd {
@@ -33,5 +33,4 @@ kbd {
   background:-o-linear-gradient(left, #ffffff 0%, #e2e2e2 25%);
   background:-ms-linear-gradient(left, #ffffff 0%, #e2e2e2 25%);
   background:linear-gradient(left, #ffffff 0%, #e2e2e2 25%);
-  filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e2e2e2', GradientType=1 );
 }
