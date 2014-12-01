@@ -65,7 +65,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-      initIntro();
+      game.initIntro();
       lastTime = Date.now();
       main();
     }
@@ -80,7 +80,7 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-      if (gameOn) {
+      if (game.gameOn) {
         updateEntities(dt);
         checkCollisions();
         updateScoringRow();
@@ -146,7 +146,7 @@ var Engine = (function(global) {
             gameOver();
           } else {
             // Add another bug to the array.
-            addAnEnemy();
+            game.addAnEnemy();
             // Reset entities for next round.
             player.reset();
             book.reset();
@@ -167,7 +167,7 @@ var Engine = (function(global) {
     function gameOver() {
       allEnemies = [];
       book.hide();
-      gameOn = false;
+      game.gameOn = false;
     }
 
     /* This function initially draws the "game level", it will then call
@@ -231,7 +231,7 @@ var Engine = (function(global) {
       }
 
       //If showing intro, render intro entities. Otherwise, render game entities.
-      if (!gameOn) {
+      if (!game.gameOn) {
         renderIntro();
       } else {
         renderEntities();
@@ -259,14 +259,14 @@ var Engine = (function(global) {
      * to indicate Spacebar functionality.
      */
     function renderStory () {
-      ctx.font = '16pt Arial';  // TODO: change font
+      ctx.font = '16pt Arial';
       ctx.fillStyle = '#000';
-      for (var i=0; i < storyText[storyIndex].length; i++){
-        ctx.fillText(storyText[storyIndex][i],225,207 + i * 25);
+      for (var i=0; i < game.storyText[game.storyIndex].length; i++){
+        ctx.fillText(game.storyText[game.storyIndex][i],225,207 + i * 25);
       }
       ctx.strokeStyle = '#fff';
       var helpText = '';
-      if (storyIndex < 9){
+      if (game.storyIndex < 9){
         helpText = 'Press Spacebar to continue';
       } else {
         helpText = 'Press Spacebar to play again';
@@ -356,7 +356,6 @@ var Engine = (function(global) {
       'images/roof-se.png',
       'images/roof-sw.png',
       'images/blank.png',
-      'images/cloud.png',
       'images/bubble-tip.png'
     ]);
     Resources.onReady(init);
