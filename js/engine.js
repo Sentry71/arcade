@@ -103,6 +103,7 @@ var Engine = (function(global) {
             if (player.carryItem) {
               book.drop();
             }
+            game.collideEfx.play();
             player.reset();
           }
         }
@@ -130,6 +131,7 @@ var Engine = (function(global) {
         if(openSlot && player.carryItem) {
           var score = new ScorePosition('book',player.x);
           allScorePositions.push(score);
+          game.bookEfx.play();
           // If all positions filled, end game.
           if (allScorePositions.length == 7){
             if(allActors.length == 2) {

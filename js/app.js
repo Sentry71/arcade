@@ -21,6 +21,8 @@ var Game = function() {
   ];
 
   //Preload audio sample(s)
+  this.bookEfx = new Audio('audio/sfx_book.wav');
+  this.collideEfx = new Audio('audio/sfx_collide.wav');
   this.gongEfx = new Audio('audio/sfx_gong.wav');
   this.gongEfxPlayed = false;
 }
