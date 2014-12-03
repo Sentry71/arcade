@@ -131,7 +131,6 @@ var Engine = (function(global) {
         if(openSlot && player.carryItem) {
           var score = new ScorePosition('book',player.x);
           allScorePositions.push(score);
-          game.bookEfx.play();
           // If all positions filled, end game.
           if (allScorePositions.length == 7){
             if(allActors.length == 2) {
@@ -139,6 +138,7 @@ var Engine = (function(global) {
             }
             gameOver();
           } else {
+            game.bookEfx.play();
             // Add another bug to the array.
             game.addAnEnemy();
             // Reset entities for next round.
