@@ -19,6 +19,10 @@ var Game = function() {
   ['Let\'s look around.'],
   ['All the course materials','were found.','Thanks for your help!']
   ];
+
+  //Preload audio sample(s)
+  this.gongEfx = new Audio('audio/sfx_gong.wav');
+  this.gongEfxPlayed = false;
 }
 
 // Toggle between paused and un-paused states by blocking updates.
@@ -51,6 +55,7 @@ Game.prototype.addAnEnemy = function() {
 Game.prototype.gameReset = function() {
   // Turn on game indicator (this should start the game).
   this.gameOn = true;
+  this.gongEfxPlayed = false;
 
   // Now instantiate your objects.
   // Place all enemy objects in an array called allEnemies
@@ -73,6 +78,7 @@ Game.prototype.gameReset = function() {
   book.reset();
 
   // Place the player object in a variable called player
+  // var not called, to put player in global scope
   player = new Player(303, 404);
 }
 
@@ -92,6 +98,12 @@ Game.prototype.initIntro = function() {
   allActors.push(actor1);
   var actor2 = new Actor('Mike', 404, 238);
   allActors.push(actor2);
+}
+
+// For end of game, show additional sprite
+Game.prototype.initEnd = function() {
+  var actor3 = new Actor('gong', 303, 238);
+  allActors.push(actor3);
 }
 
 

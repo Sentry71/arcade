@@ -132,6 +132,9 @@ var Engine = (function(global) {
           allScorePositions.push(score);
           // If all positions filled, end game.
           if (allScorePositions.length == 7){
+            if(allActors.length == 2) {
+              game.initEnd();
+            }
             gameOver();
           } else {
             // Add another bug to the array.
@@ -260,6 +263,10 @@ var Engine = (function(global) {
       } else {
         helpText = 'Press Spacebar to play again';
         allActors[1].talking = true;
+        if(!game.gongEfxPlayed) {
+          game.gongEfx.play();
+          game.gongEfxPlayed = true;
+        }
       }
       ctx.lineWidth = 5;
       ctx.strokeText(helpText,225,515);
@@ -345,7 +352,8 @@ var Engine = (function(global) {
       'images/roof-se.png',
       'images/roof-sw.png',
       'images/blank.png',
-      'images/bubble-tip.png'
+      'images/bubble-tip.png',
+      'images/gong.png'
     ]);
     Resources.onReady(init);
 
