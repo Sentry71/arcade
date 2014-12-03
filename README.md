@@ -17,7 +17,7 @@ Game Play
 - Take the book to the top of the game board, and drop it onto an open tile by moving onto that tile. Books can be placed in any order.
 - If the player character is hit, the character will alternate and gameplay will start again. (For example, if Mike is hit, Miriam will be next for the player to control.)
 - If a character is carrying a book when he/she is hit, the book will be dropped where the collision occurred.
-- When all five books are at the top of the screen, the player wins!
+- When all five books are at the top of the screen, the player wins! Bang a gong!
 
 Game Controls
 ---
@@ -31,3 +31,7 @@ During the game:
 
 During the end game scene:
 - Pressing **Spacebar** will restart the game.
+
+Issues
+---
+There is a known problem where the audio sound effects are slightly delayed on some browsers. I intend to update the code in the future to address this issue.
