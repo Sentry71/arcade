@@ -99,11 +99,11 @@ var Engine = (function(global) {
       allEnemies.forEach(function(enemy) {
         if(player.y - enemy.y == 10) {
           if(player.x < enemy.x + 75 && player.x + 75 > enemy.x ){
+            game.collideEfx.play();
             // If the player is carrying an item, drop it.
             if (player.carryItem) {
               book.drop();
             }
-            game.collideEfx.play();
             player.reset();
           }
         }
