@@ -1,9 +1,3 @@
-/* Engine.js
- * This file provides the game loop functionality (update entities and render),
- * draws the initial game board on the screen, and then calls the update and
- * render methods on your player and enemy objects (defined in your app.js).
- */
-
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -24,10 +18,7 @@ var Engine = (function(global) {
      */
     function main() {
       /* Get our time delta information which is required if your game
-       * requires smooth animation. Because everyone's computer processes
-       * instructions at different speeds we need a constant value that
-       * would be the same for everyone (regardless of how fast their
-       * computer is) - hurray time!
+       * requires smooth animation.
        */
       var now = Date.now(),
           dt = (now - lastTime) / 1000.0;
@@ -60,13 +51,7 @@ var Engine = (function(global) {
     }
 
     /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+     * of the functions which may need to update entity's data.
      */
     function update(dt) {
       if (game.gameOn) {
@@ -78,10 +63,7 @@ var Engine = (function(global) {
 
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
-     * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to  the object. Do your drawing in your
-     * render methods.
+     * their update() methods.
      */
     function updateEntities(dt) {
       allEnemies.forEach(function(enemy) {
@@ -119,25 +101,25 @@ var Engine = (function(global) {
     function updateScoringRow() {
       // Check if player has reached the scoring row.
       if(player.y < 0) {
-        // Verify player is at with an open position. Set openSlot boolean
-        // to indicate if there is an open spot above the player.
+        /* Verify player is at with an open position. Set openSlot boolean
+         * to indicate if there is an open spot above the player.
+         */
         var openSlot = true;
         allScorePositions.forEach(function(pos) {
           if(player.x === pos.x){
             openSlot = false;
           }
         });
+
         // If position is open, add book.
         if(openSlot && player.carryItem) {
           var score = new ScorePosition('book',player.x);
           allScorePositions.push(score);
           // If all positions filled, end game.
           if (allScorePositions.length == 7){
-            if(allActors.length == 2) {
-              game.initEnd();
-            }
             gameOver();
           } else {
+            // Play book drop sound effect
             game.bookEfx.play();
             // Add another bug to the array.
             game.addAnEnemy();
@@ -146,7 +128,6 @@ var Engine = (function(global) {
             book.reset();
             allEnemies.forEach(function(enemy) {
               enemy.increaseRate();
-              //enemy.reset();
             });
           }
         }else{
@@ -156,19 +137,16 @@ var Engine = (function(global) {
       }
     }
 
-    // When game ends, clear the allEnemies array, hide the book,
-    // and disable the gameOn indicator.
+    // When game ends, clear game entities and set up end scene
     function gameOver() {
+      game.initEnd();
       allEnemies = [];
       book.hide();
       game.gameOn = false;
     }
 
     /* This function initially draws the "game level", it will then call
-     * the renderEntities function. Remember, this function is called every
-     * game tick (or loop of the game engine) because that's how games work -
-     * they are flipbooks creating the illusion of animation but in reality
-     * they are just drawing the entire screen over and over.
+     * the renderEntities function.
      */
     function render() {
       // Call function to render the top row.
@@ -182,8 +160,8 @@ var Engine = (function(global) {
         'images/tall-wall.png'
       ];
 
-      /* This array holds the relative URL to the image used
-       * for that particular row of the game level.
+      /* This array holds the relative URL to the image used for that particular
+       * row of the game level.
        */
       var rowImages = [
           'images/wood-block.png',    // Top row is wood (no longer used)
@@ -202,8 +180,9 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get(topRowTiles[col]), col * 101, 0);
       }
 
-      // Call images specifically for top row decoration AFTER the top row
-      // is rendered, so they draw on top of the base tiles.
+      /* Call images specifically for top row decoration AFTER the top row
+       * is rendered, so they draw on top of the base tiles.
+       */
       ctx.drawImage(Resources.get('images/roof-se.png'), 0, -81);
       ctx.drawImage(Resources.get('images/roof-sw.png'), 606, -81);
 
@@ -213,13 +192,6 @@ var Engine = (function(global) {
        */
       for (row = 1; row < numRows; row++) {
         for (col = 0; col < numCols; col++) {
-          /* The drawImage function of the canvas' context element
-           * requires 3 parameters: the image to draw, the x coordinate
-           * to start drawing and the y coordinate to start drawing.
-           * We're using our Resources helpers to refer to our images
-           * so that we get the benefits of caching these images, since
-           * we're using them over and over.
-           */
           ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
         }
       }
@@ -259,6 +231,7 @@ var Engine = (function(global) {
         ctx.fillText(game.storyText[game.storyIndex][i],225,207 + i * 25);
       }
       ctx.strokeStyle = '#fff';
+
       var helpText = '';
       if (game.storyIndex < 9){
         helpText = 'Press Spacebar to continue';
@@ -306,8 +279,7 @@ var Engine = (function(global) {
     }
 
     /* This function is called by the render function and is called on each game
-     * tick. It's purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
+     * tick.
      */
     function renderEntities() {
       // Render books on top row from successful placements by player
@@ -328,8 +300,7 @@ var Engine = (function(global) {
       player.render();
     }
 
-    // Since this render is used in the game and in the gameOver screen,
-    // it was refactored out on its own.
+    // Used by both renderIntro and renderEntities
     function renderScoringRow () {
       allScorePositions.forEach(function(pos) {
         pos.render();
