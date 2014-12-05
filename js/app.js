@@ -5,8 +5,9 @@ var Game = function() {
   this.gameOn = false;
   this.storyIndex = 0;
 
-  // Create array of text items to be spoken by actors. Set storyIndex
-  // to keep track of item being spoken. Text will alternate between actors.
+  /* Create array of text items to be spoken by actors. Set storyIndex
+   * to keep track of item being spoken. Text will alternate between actors.
+   */
   this.storyText = [
   ['Hi Mike! Are you ready for', 'tomorrow\'s start to the', 'nanodegree program?'],
   ['I sure am, Miriam!', 'I have everything right here...'],
@@ -27,8 +28,9 @@ var Game = function() {
   this.gongEfxPlayed = false;
 }
 
-// Toggle between paused and un-paused states by blocking updates.
-// This boolean is used in Enemy.update and Player.handleInput
+/* Toggle between paused and un-paused states by blocking updates.
+ * This boolean is used in Enemy.update and Player.handleInput
+ */
 Game.prototype.togglePause = function() {
   this.paused = !this.paused;
 }
@@ -52,14 +54,14 @@ Game.prototype.addAnEnemy = function() {
   allEnemies.push(enemy);
 }
 
-// Initialize game asset variables. This is called on startup of the game,
-// or if the player presses R on the keyboard.
+/* Initialize game asset variables. This is called on startup of the game,
+ * or if the player presses R on the keyboard.
+ */
 Game.prototype.gameReset = function() {
   // Turn on game indicator (this should start the game).
   this.gameOn = true;
   this.gongEfxPlayed = false;
 
-  // Now instantiate your objects.
   // Place all enemy objects in an array called allEnemies
   allEnemies = [];
   for(i=1; i<4; i++){
@@ -67,8 +69,9 @@ Game.prototype.gameReset = function() {
     allEnemies.push(enemy);
   }
 
-  // Create array to hold items in scoring position. Prepopulate start and end
-  // positions (walls) as nonusable.
+  /* Create array to hold items in scoring position. Prepopulate start and end
+   * positions (walls) as nonusable.
+   */
   allScorePositions = [];
   var score = new ScorePosition('blank',0);
   allScorePositions.push(score);
@@ -79,8 +82,7 @@ Game.prototype.gameReset = function() {
   book = new Item('book', -100, -100);
   book.reset();
 
-  // Place the player object in a variable called player
-  // var not called, to put player in global scope
+  // Place the player object in a variable called player (in global scope)
   player = new Player(303, 404);
 }
 
@@ -91,8 +93,9 @@ Game.prototype.speakerToggle = function() {
   });
 }
 
-// Initialize intro characters, place in allActors array.
-// Start conversation with actor1.
+/* Initialize intro characters, place in allActors array.
+ * Start conversation with actor1.
+ */
 Game.prototype.initIntro = function() {
   allActors= [];
   var actor1 = new Actor('Miriam', 202, 238);
@@ -109,7 +112,7 @@ Game.prototype.initEnd = function() {
 }
 
 
-// Enemies our player must avoid
+// Enemies our player must avoid. Rate is randomized on instantiation.
 var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
@@ -117,12 +120,10 @@ var Enemy = function(x, y) {
     this.rate = 100 + Math.floor(Math.random() * 150);
 }
 
-// Update the enemy's position, required method for game
-// @param {number} dt A time delta between ticks.
+/* Update the enemy's position, required method for game
+ * @param {number} dt A time delta between ticks.
+ */
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
     if (!game.paused){
       this.x = this.x + (dt * this.rate);
     }
@@ -149,7 +150,7 @@ Enemy.prototype.render = function() {
 }
 
 
-// Now write your own player class
+// Player class, to represent our player.
 var Player = function(x,y) {
   this.sprite = 'images/Miriam.png';
   this.x = x;
@@ -168,8 +169,9 @@ Player.prototype.reset = function() {
     this.sprite = (this.sprite.search('Mike') !== -1) ? 'images/Miriam.png' : 'images/Mike.png';
   }
 
-  // If player is carrying an item, set carryItem to false and
-  // modify sprite name to no longer display that item
+  /* If player is carrying an item, set carryItem to false and
+   * modify sprite name to no longer display that item
+   */
   if (this.carryItem) {
     this.carryItem = false;
     this.sprite = this.sprite.replace('_w_' + book.name,'');
@@ -180,12 +182,11 @@ Player.prototype.reset = function() {
   this.y = 404;
 }
 
-// Takes input and does something with it
-// @param {String} key, the keyCode from the key pressed
-// IF statements verify movement will not allow the
-// player outside the canvas boundaries before the
-// movement is calculated.
-
+/* Handle keyboard input during gameplay.
+ * 'IF' statements verify movement will not allow the player outside the
+ * canvas boundaries before the movement is calculated.
+ * @param {String} key, the keyCode from the key pressed
+ */
 Player.prototype.handleInput = function(key) {
   switch(key) {
     case 'up':
@@ -238,8 +239,7 @@ Item.prototype.pickup = function() {
   this.visible = false;
   player.carryItem = true;
 
-  // Change player sprite name to show item carried
-  // For example, Mike.png becomes Mike_w_book.png
+  // Change player sprite name to show item carried (Mike.png becomes Mike_w_book.png)
   player.sprite = player.sprite.slice(0,-4) + '_w_' + this.name + '.png';
 
   // Hide item off screen (to be reused on reset)
@@ -247,7 +247,7 @@ Item.prototype.pickup = function() {
   this.y = -101;
 }
 
-
+// Drop item on game board, update entities to match state.
 Item.prototype.drop = function() {
   this.visible = true;
   player.carryItem = false;
@@ -255,14 +255,12 @@ Item.prototype.drop = function() {
   this.y = player.y;
 }
 
-// Reset will set item on game board to be picked up
+// Reset will set item on game board to be picked up.
 Item.prototype.reset = function() {
-  // Randomize the location of the item.
   this.x = Math.floor(Math.random() * 5) * 101;
   this.y = Math.ceil(Math.random() * 4) * 83 - 11;
   this.visible = true;
 }
-
 
 // Hide item when no longer needed (end game, etc.)
 Item.prototype.hide = function() {
@@ -275,8 +273,11 @@ Item.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Create item(s) to hold information about where an item has been placed on the
-// scoring row.
+/* Create item(s) to hold information about where an item has been placed on the
+ * scoring row.
+ * @param {String} name Name of item, corresponds to image in memory.
+ * @param {number} x    X coordinate of item displayed.
+ */
 var ScorePosition = function(name, x) {
   this.x = x;
   this.y = -11;
@@ -289,7 +290,11 @@ ScorePosition.prototype.render = function() {
 }
 
 
-// Create actors for intro/gameOver dialogs
+/* Create actors for intro/gameOver dialogs
+ * @param {String} name Name of actor, corresponds to image in memory.
+ * @param {number} x    X coordinate of actor displayed.
+ * @param {number} y    Y coordinate of actor displayed.
+ */
 var Actor = function(name, x, y) {
   this.sprite = 'images/' + name + '.png';
   this.x = x;
@@ -297,8 +302,9 @@ var Actor = function(name, x, y) {
   this.talking = false;
 }
 
-// Draw actor on game board. If this specific actor is talking, add the
-// indicator above their head, connecting to the chat bubble.
+/* Draw actor on game board. If this specific actor is talking, add the
+ * indicator above their head, connecting to the chat bubble.
+ */
 Actor.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   if(this.talking) {
@@ -306,8 +312,10 @@ Actor.prototype.render = function() {
   }
 }
 
-// Handle keyboard input during intro scene. When all text for intro
-// is complete, show gameplay instructions below game board and start game.
+/* Handle keyboard input during intro scene. When all text for intro
+ * is complete, show gameplay instructions below game board and start game.
+ * @param {String} key Value of keypress, as determined in the event listener.
+ */
 Actor.prototype.handleInput = function(key) {
   switch(key) {
     case 'spacebar':
@@ -326,8 +334,9 @@ Actor.prototype.handleInput = function(key) {
 //Initialize game (implicity global)
 game = new Game();
 
-// This listens for key presses and sends the keys to your
-// handleInput() methods.
+/* This listens for key presses and sends the keys to your handleInput() methods.
+ * Also prevents standard responses to key presses.
+ */
 document.addEventListener('keydown', function(e) {
   if (!game.gameOn) {
     var allowedKeys = {
