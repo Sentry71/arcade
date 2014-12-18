@@ -71,7 +71,7 @@ Game.prototype.gameReset = function() {
 
   // Place all enemy objects in an array called allEnemies
   allEnemies = [];
-  for(i=1; i<4; i++){
+  for(var i=1; i<4; i++){
     var enemy = new Enemy(0-i*101, 83*i-21);
     allEnemies.push(enemy);
   }
@@ -85,11 +85,15 @@ Game.prototype.gameReset = function() {
   var score2 = new ScorePosition('blank',606);
   allScorePositions.push(score2);
 
-  // Instantiate book offscreen, then randomize its location to start
+  /* Instantiate book offscreen, then randomize its location to start
+   * Do not use 'var', so that it becomes global.
+   */
   book = new Item('book', -100, -100);
   book.reset();
 
-  // Place the player object in a variable called player (in global scope)
+  /* Place the player object in a variable called player
+   * Do not use 'var', so that it becomes global.
+   */
   player = new Player(303, 404);
 
   // Turn on game indicator. This will start game rendering.
@@ -360,13 +364,14 @@ game = new Game();
  * Also prevents standard responses to key presses.
  */
 document.addEventListener('keydown', function(e) {
+  var allowedKeys;
   if (!game.gameOn) {
-    var allowedKeys = {
+    allowedKeys = {
       32: 'spacebar'
-    }
+    };
     allActors[0].handleInput(allowedKeys[e.keyCode]);
   } else {
-    var allowedKeys = {
+    allowedKeys = {
       32: 'spacebar',
       37: 'left',
       38: 'up',
