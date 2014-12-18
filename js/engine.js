@@ -38,7 +38,7 @@ var Engine = (function(global) {
      * function again as soon as the browser is able to draw another frame.
      */
     win.requestAnimationFrame(main);
-  };
+  }
 
   /* This function does some initial setup that should only occur once,
    * particularly setting the lastTime variable that is required for the
@@ -48,7 +48,7 @@ var Engine = (function(global) {
     game.initIntro();
     lastTime = Date.now();
     main();
-  };
+  }
 
   /* This function is called by main (our game loop) and itself calls all
    * of the functions which may need to update entity's data.
@@ -59,7 +59,7 @@ var Engine = (function(global) {
       checkCollisions();
       updateScoringRow();
     }
-  };
+  }
 
   /* This is called by the update function  and loops through all of the
    * objects within your allEnemies array as defined in app.js and calls
@@ -69,7 +69,7 @@ var Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.update(dt);
     });
-  };
+  }
 
   // Check collisions
   function checkCollisions(){
@@ -95,7 +95,7 @@ var Engine = (function(global) {
     if(player.y === book.y && player.x === book.x) {
       book.pickup();
     }
-  };
+  }
 
 
   function updateScoringRow() {
@@ -135,7 +135,7 @@ var Engine = (function(global) {
         player.y += 83;
       }
     }
-  };
+  }
 
   // When game ends, clear game entities and set up end scene
   function gameOver() {
@@ -143,7 +143,7 @@ var Engine = (function(global) {
     allEnemies = [];
     book.hide();
     game.gameOn = false;
-  };
+  }
 
   /* This function initially draws the "game level", it will then call
    * the renderEntities function.
@@ -202,7 +202,7 @@ var Engine = (function(global) {
     } else {
       renderEntities();
     }
-  };
+  }
 
 
   /* This function is called to draw the intro/gameOver scene. It uses the
@@ -217,7 +217,7 @@ var Engine = (function(global) {
       actor.render();
     });
     renderStory();
-  };
+  }
 
   /* This function takes the information from the storyText array in app.js,
    * and uses that data to render the text in the story bubble above the
@@ -246,7 +246,7 @@ var Engine = (function(global) {
     ctx.lineWidth = 5;
     ctx.strokeText(helpText,225,515);
     ctx.fillText(helpText,225,515);
-  };
+  }
 
   /** Code below from http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html
   * Draws a rounded rectangle using the current state of the canvas.
@@ -276,7 +276,7 @@ var Engine = (function(global) {
     ctx.closePath();
     ctx.stroke();
     ctx.fill();
-  };
+  }
 
   /* This function is called by the render function and is called on each game
    * tick.
@@ -298,14 +298,14 @@ var Engine = (function(global) {
     });
 
     player.render();
-  };
+  }
 
   // Used by both renderIntro and renderEntities
   function renderScoringRow () {
     allScorePositions.forEach(function(pos) {
       pos.render();
     });
-  };
+  }
 
   /* Go ahead and load all of the images we know we're going to need to
    * draw our game level. Then set init as the callback method, so that when
